@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { BarChart3 } from 'lucide-react'
 import React from 'react'
 
 interface Props {
@@ -8,22 +8,21 @@ interface Props {
 }
 
 export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
+  const { className } = props
 
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-logo-light.svg"
-    />
+    <span className={['inline-flex items-center gap-2 text-slate-950', className].join(' ')}>
+      <span className="grid size-10 place-items-center rounded-lg bg-blue-700 text-white">
+        <BarChart3 aria-hidden className="size-6" strokeWidth={2.5} />
+      </span>
+      <span className="leading-none">
+        <strong className="block text-xl tracking-[-0.03em]">
+          Affiliate<span className="text-blue-700">Path</span>
+        </strong>
+        <small className="mt-1 block text-[10px] font-medium tracking-[0.08em] text-slate-500">
+          LEARN · GROW · EARN ONLINE
+        </small>
+      </span>
+    </span>
   )
 }

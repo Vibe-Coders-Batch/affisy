@@ -2,7 +2,6 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
 
-import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 
@@ -12,19 +11,21 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white">
-      <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
+    <footer className="mt-auto border-t border-slate-200 bg-slate-50 text-slate-700">
+      <div className="container flex flex-col gap-8 py-8 md:flex-row md:items-center md:justify-between">
         <Link className="flex items-center" href="/">
           <Logo />
         </Link>
 
-        <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
-          <ThemeSelector />
-          <nav className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col items-start gap-4 md:items-end">
+          <nav className="flex flex-wrap gap-4 text-sm">
             {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
+              return <CMSLink className="text-slate-600 hover:text-blue-700" key={i} {...link} />
             })}
           </nav>
+          <p className="text-xs text-slate-500">
+            © {new Date().getFullYear()} AffiliatePath. Educational content only.
+          </p>
         </div>
       </div>
     </footer>
