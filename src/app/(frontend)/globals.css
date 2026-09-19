@@ -222,3 +222,110 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+/* ShoppeCove's editorial palette stays legible regardless of the admin theme. */
+body {
+  background: #faf9f5;
+  color: #233d32;
+}
+.font-editorial {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+}
+.eyebrow {
+  font-size: 10px;
+  line-height: 1.6;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #697458;
+}
+.cove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background: #233d32;
+  color: #faf9f5;
+  padding: 0.95rem 1.4rem;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+.cove-button:hover {
+  background: #3c5744;
+}
+a,
+button,
+input {
+  touch-action: manipulation;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid #a25a3c;
+  outline-offset: 5px;
+}
+.editorial-card {
+  min-width: 0;
+}
+.editorial-card-image {
+  aspect-ratio: 1.6;
+}
+.editorial-card-copy {
+  padding: 1.4rem 0;
+}
+.editorial-card-featured .editorial-card-image {
+  aspect-ratio: 1.85;
+}
+.editorial-card-featured h3 {
+  font-size: 2.15rem;
+}
+.article-body {
+  color: #3f4c41;
+  font-size: 1.08rem;
+  line-height: 1.9;
+  --tw-prose-body: #3f4c41;
+  --tw-prose-headings: #233d32;
+  --tw-prose-links: #233d32;
+  --tw-prose-bold: #233d32;
+  --tw-prose-bullets: #7a866a;
+  --tw-prose-quotes: #233d32;
+  --tw-prose-counters: #626b60;
+}
+.article-body h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+  margin-top: 2.2em;
+  scroll-margin-top: 7rem;
+}
+.article-body h3 {
+  font-size: 1.25rem;
+  scroll-margin-top: 7rem;
+}
+.article-body a {
+  text-decoration-color: #a4af91;
+  text-underline-offset: 4px;
+}
+.article-body blockquote {
+  border-color: #a4af91;
+  background: #eef0e6;
+  padding: 1rem 1.5rem;
+}
+.article-body img {
+  border-radius: 2px;
+}
+.article-body > :first-child {
+  margin-top: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

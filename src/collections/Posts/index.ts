@@ -6,6 +6,7 @@ import {
   HeadingFeature,
   HorizontalRuleFeature,
   InlineToolbarFeature,
+  UnorderedListFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
@@ -88,7 +89,8 @@ export const Posts: CollectionConfig<'posts'> = {
                 features: ({ rootFeatures }) => {
                   return [
                     ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+                    UnorderedListFeature(),
                     BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
@@ -157,6 +159,76 @@ export const Posts: CollectionConfig<'posts'> = {
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
+          ],
+        },
+      ],
+    },
+    {
+      name: 'imageCaption',
+      type: 'text',
+      admin: {
+        description: 'Image credit or illustration disclosure, shown below the hero image.',
+      },
+    },
+    {
+      name: 'review',
+      type: 'group',
+      label: 'Product guide & affiliate link',
+      fields: [
+        { name: 'summary', type: 'textarea', label: 'At a glance' },
+        {
+          name: 'basis',
+          type: 'textarea',
+          label: 'How this article was researched',
+          admin: {
+            description:
+              'State whether you tested the product or used seller information. Do not imply hands-on testing without evidence.',
+          },
+        },
+        {
+          name: 'advantages',
+          type: 'array',
+          fields: [{ name: 'text', type: 'text', required: true }],
+        },
+        {
+          name: 'considerations',
+          type: 'array',
+          fields: [{ name: 'text', type: 'text', required: true }],
+        },
+        {
+          name: 'affiliateURL',
+          type: 'text',
+          label: 'Tracked affiliate URL',
+          validate: (value: unknown) => {
+            if (!value) return true
+            try {
+              return new URL(String(value)).protocol === 'https:' || 'Use an HTTPS affiliate URL.'
+            } catch {
+              return 'Enter a valid HTTPS URL.'
+            }
+          },
+        },
+        { name: 'linkLabel', type: 'text', defaultValue: 'Check price & availability' },
+        {
+          name: 'sources',
+          type: 'array',
+          fields: [
+            { name: 'title', type: 'text', required: true },
+            {
+              name: 'url',
+              type: 'text',
+              required: true,
+              validate: (value: unknown) => {
+                try {
+                  return (
+                    ['https:', 'http:'].includes(new URL(String(value)).protocol) ||
+                    'Use an HTTP or HTTPS URL.'
+                  )
+                } catch {
+                  return 'Enter a valid URL.'
+                }
+              },
+            },
           ],
         },
       ],

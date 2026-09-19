@@ -1,371 +1,258 @@
 import configPromise from '@payload-config'
-import { ArrowRight, BarChart3, BookOpen, CheckCircle2, Star, Users, Wrench } from 'lucide-react'
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BookOpen,
+  CookingPot,
+  Leaf,
+  Search,
+  ShieldCheck,
+  BedDouble,
+} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
-import React from 'react'
-
 import { Media } from '@/components/Media'
-import type { Form, Media as MediaType, Post } from '@/payload-types'
-import { NewsletterSignup } from './NewsletterSignup'
-
-type IconName = 'book' | 'chart' | 'people' | 'star' | 'tools'
-
-type Props = {
-  categoriesHeading?: string | null
-  categoryCards?: Array<{
-    description: string
-    icon: IconName
-    id?: string | null
-    linkLabel?: string | null
-    title: string
-    tone: 'blue' | 'green' | 'violet' | 'orange'
-    url: string
-  }> | null
-  featuredHeading?: string | null
-  featuredPost?: Post | string | null
-  heroCTA: { label: string; url: string }
-  heroDescription: string
-  heroImage?: MediaType | string | null
-  heroTitle: string
-  latestHeading?: string | null
-  latestLimit?: number | null
-  newsletter: {
-    buttonLabel?: string | null
-    description?: string | null
-    form?: Form | string | null
-    heading?: string | null
-    placeholder?: string | null
-    privacyNote?: string | null
-  }
-  recommendation: {
-    benefits?: Array<{ id?: string | null; text: string }> | null
-    buttonLabel: string
-    description: string
-    disclosure: string
-    heading?: string | null
-    image?: MediaType | string | null
-    title: string
-    url: string
-  }
-  trustPoints?: Array<{
-    description: string
-    icon: 'book' | 'chart' | 'people'
-    id?: string | null
-    title: string
-  }> | null
-}
-
-const iconMap = {
-  book: BookOpen,
-  chart: BarChart3,
-  people: Users,
-  star: Star,
-  tools: Wrench,
-}
-
-const toneClasses = {
-  blue: 'bg-blue-50 text-blue-700 border-blue-100',
-  green: 'bg-emerald-50 text-emerald-700 border-emerald-100',
-  violet: 'bg-violet-50 text-violet-700 border-violet-100',
-  orange: 'bg-orange-50 text-orange-700 border-orange-100',
-}
-
-function PostImage({ post, className }: { post: Post; className?: string }) {
-  const image = post.meta?.image || post.heroImage
-
-  return (
-    <div className={`relative overflow-hidden bg-slate-100 ${className || ''}`}>
-      {image && typeof image === 'object' ? (
-        <Media
-          fill
-          imgClassName="object-cover"
-          resource={image}
-          size="(max-width: 768px) 100vw, 33vw"
-        />
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-slate-200" />
-      )}
-    </div>
-  )
-}
+import { PostCard } from '@/components/Editorial/PostCard'
+import type { AffiliateHomeBlock as Props } from '@/payload-types'
 
 export async function AffiliateHomeBlock(props: Props) {
   const payload = await getPayload({ config: configPromise })
-  const latestResult = await payload.find({
+  const { docs: posts } = await payload.find({
     collection: 'posts',
     depth: 1,
     draft: false,
     limit: props.latestLimit || 6,
     overrideAccess: false,
     sort: '-publishedAt',
+    where: { _status: { equals: 'published' } },
   })
-
-  const latestPosts = latestResult.docs
-  let featured = typeof props.featuredPost === 'object' ? props.featuredPost : undefined
-
-  if (!featured && typeof props.featuredPost === 'string') {
-    featured = await payload.findByID({
-      collection: 'posts',
-      id: props.featuredPost,
-      depth: 1,
-      overrideAccess: false,
-    })
-  }
-
-  featured ||= latestPosts[0]
-  const recentPosts = latestPosts.filter((post) => post.id !== featured?.id).slice(0, 5)
-  const newsletterForm = props.newsletter.form
-  const formID =
-    newsletterForm && typeof newsletterForm === 'object'
-      ? newsletterForm.id
-      : newsletterForm || undefined
-
+  // Only use a featured relationship if it is still publicly published.
+  const featuredID =
+    typeof props.featuredPost === 'object' ? props.featuredPost?.id : props.featuredPost
+  const featured =
+    (featuredID
+      ? (
+          await payload.find({
+            collection: 'posts',
+            limit: 1,
+            depth: 1,
+            overrideAccess: false,
+            where: { and: [{ id: { equals: featuredID } }, { _status: { equals: 'published' } }] },
+          })
+        ).docs[0]
+      : undefined) || posts[0]
+  const legacy = props.heroTitle === 'Learn Affiliate Marketing. Build Your Freedom.'
+  const title = legacy ? 'Good finds.\nBetter everyday living.' : props.heroTitle
+  const description = legacy
+    ? 'Thoughtful buying guides and a closer look at the things you bring home. Find what fits your life, before you buy.'
+    : props.heroDescription
   return (
-    <section className="affiliate-home bg-white text-slate-950">
+    <div className="shoppecove-home">
       <div className="container">
-        <div className="relative isolate min-h-[430px] overflow-hidden rounded-2xl border border-blue-100 bg-blue-50 shadow-sm">
-          <div className="absolute inset-0">
-            {props.heroImage && typeof props.heroImage === 'object' ? (
-              <Media fill imgClassName="object-cover" priority resource={props.heroImage} />
-            ) : (
-              <Image
-                alt="A bright workspace with a laptop showing a growth chart"
-                fill
-                priority
-                className="object-cover"
-                src="/affiliate-hero.png"
-              />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/5" />
-          </div>
-
-          <div className="relative flex min-h-[430px] max-w-2xl flex-col justify-center px-6 py-12 sm:px-12 lg:px-16">
-            <h1 className="max-w-xl text-4xl font-extrabold tracking-[-0.035em] text-slate-950 sm:text-5xl lg:text-[3.5rem] lg:leading-[1.02]">
-              {props.heroTitle}
-            </h1>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
-              {props.heroDescription}
+        <div className="flex flex-wrap justify-between gap-2 border-b border-[#deded3] py-4 text-[10px] uppercase tracking-[0.16em] text-[#626b60]">
+          <span>The ShoppeCove journal</span>
+          <span>Considered choices. Everyday discoveries.</span>
+        </div>
+        <section className="grid items-center gap-10 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-16">
+          <div>
+            <p className="eyebrow flex items-center gap-2">
+              <span className="size-1.5 rounded-full bg-[#b7704f]" /> A more thoughtful way to shop
             </p>
-            <div className="mt-7">
+            <h1 className="font-editorial mt-6 whitespace-pre-line text-5xl leading-[1.06] tracking-[-0.045em] sm:text-6xl lg:text-[72px]">
+              {title}
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-8 text-[#626b60]">{description}</p>
+            <Link href={legacy ? '/posts' : props.heroCTA.url} className="cove-button mt-7">
+              {legacy ? 'Explore the journal' : props.heroCTA.label}
+              <ArrowUpRight className="size-4" />
+            </Link>
+            <p className="mt-7 text-xs text-[#626b60]">
+              Home & kitchen <span className="px-2">/</span> Sleep & comfort{' '}
+              <span className="px-2">/</span> Everyday know-how
+            </p>
+          </div>
+          <figure className="relative">
+            <div className="relative aspect-[1.18] overflow-hidden rounded-t-[45%] rounded-b-sm bg-[#e9eadd]">
+              {!legacy && props.heroImage && typeof props.heroImage === 'object' ? (
+                <Media fill priority resource={props.heroImage} imgClassName="object-cover" />
+              ) : (
+                <Image
+                  src="/images/kitchen-editorial.webp"
+                  alt="An illustrative kitchen scene with a chef’s knife, tomatoes, and an oak cutting board"
+                  fill
+                  preload
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  className="object-cover"
+                />
+              )}
+            </div>
+            <div className="absolute bottom-10 -left-3 max-w-[250px] bg-[#faf9f5] p-5 shadow-sm sm:-left-6">
+              <p className="eyebrow">Start with the essentials</p>
+              <p className="font-editorial mt-2 text-2xl leading-tight">
+                Small details.
+                <br />
+                Better decisions.
+              </p>
               <Link
-                className="inline-flex min-h-12 items-center gap-2 rounded-lg bg-[#ff5a47] px-6 py-3 font-bold text-white shadow-sm transition hover:bg-[#e94b39] hover:shadow-md"
-                href={props.heroCTA.url}
+                href="/posts?category=kitchen"
+                className="mt-3 inline-flex items-center gap-3 text-xs font-medium"
               >
-                {props.heroCTA.label} <ArrowRight aria-hidden className="size-4" />
+                Explore kitchen guides <ArrowRight className="size-4" />
               </Link>
             </div>
-
-            {!!props.trustPoints?.length && (
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                {props.trustPoints.map((item) => {
-                  const Icon = iconMap[item.icon]
-                  return (
-                    <div className="flex gap-3" key={item.id || item.title}>
-                      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 text-blue-700">
-                        <Icon aria-hidden className="size-5" />
-                      </span>
-                      <span>
-                        <strong className="block text-sm">{item.title}</strong>
-                        <span className="text-xs leading-5 text-slate-500">{item.description}</span>
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
+            {(legacy || !props.heroImage) && (
+              <figcaption className="mt-2 text-right text-[10px] text-[#73796e]">
+                AI-generated editorial illustration
+              </figcaption>
             )}
+          </figure>
+        </section>
+        <div className="grid gap-5 border-y border-[#deded3] py-6 sm:grid-cols-3">
+          {[
+            {
+              icon: Search,
+              title: 'Look beyond the headline',
+              text: 'Features, trade-offs, and questions to ask.',
+            },
+            {
+              icon: BookOpen,
+              title: 'Find your next useful read',
+              text: 'Practical advice before you buy.',
+            },
+            {
+              icon: ShieldCheck,
+              title: 'Know how we earn',
+              text: 'Clear disclosure of affiliate relationships.',
+            },
+          ].map(({ icon: Icon, title, text }) => (
+            <div className="flex items-start gap-3" key={title}>
+              <Icon className="mt-1 size-5 shrink-0 text-[#7d896a]" strokeWidth={1.5} />
+              <div>
+                <h2 className="text-sm font-medium">{title}</h2>
+                <p className="mt-1 text-xs leading-5 text-[#626b60]">{text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <section className="py-14">
+          <div className="mb-7 flex items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow">Settle in. Have a read.</p>
+              <h2 className="font-editorial mt-2 text-4xl tracking-tight">From the journal</h2>
+            </div>
+            <Link href="/posts" className="inline-flex items-center gap-2 text-sm">
+              All stories <ArrowUpRight className="size-4" />
+            </Link>
           </div>
-        </div>
-
-        <div className="grid gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <main className="min-w-0 space-y-10">
-            {featured && (
-              <section>
-                <div className="mb-4 flex items-center justify-between gap-4">
-                  <h2 className="text-2xl font-extrabold tracking-tight">
-                    {props.featuredHeading}
-                  </h2>
-                  <Link
-                    className="text-sm font-semibold text-blue-700 hover:text-blue-900"
-                    href="/posts"
-                  >
-                    View all posts →
-                  </Link>
+          {featured ? (
+            <div className="grid gap-8 lg:grid-cols-[1.65fr_1fr]">
+              <PostCard featured post={featured} />
+              <aside className="flex flex-col justify-between bg-[#e9eddf] p-7 sm:p-9">
+                <div>
+                  <p className="eyebrow">The ShoppeCove way</p>
+                  <Leaf className="my-7 size-9 text-[#7a866a]" strokeWidth={1} />
+                  <h3 className="font-editorial text-4xl leading-[1.15] tracking-tight">
+                    Less impulse.
+                    <br />
+                    More intention.
+                  </h3>
+                  <p className="mt-5 text-sm leading-7 text-[#626b60]">
+                    The right purchase starts with the right questions. Our guides help you think
+                    through what matters, what to compare, and what to check with the seller.
+                  </p>
                 </div>
-                <article className="grid overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm md:grid-cols-[46%_1fr]">
-                  <PostImage className="min-h-64 md:min-h-full" post={featured} />
-                  <div className="flex flex-col justify-center p-6 md:p-8">
-                    <span className="mb-3 w-fit rounded bg-blue-50 px-2 py-1 text-xs font-bold uppercase tracking-wide text-blue-700">
-                      Featured guide
-                    </span>
-                    <h3 className="text-2xl font-extrabold leading-tight">
-                      <Link href={`/posts/${featured.slug}`}>{featured.title}</Link>
-                    </h3>
-                    {featured.meta?.description && (
-                      <p className="mt-3 leading-7 text-slate-600">{featured.meta.description}</p>
-                    )}
-                    <Link
-                      className="mt-5 inline-flex items-center gap-1 font-bold text-blue-700"
-                      href={`/posts/${featured.slug}`}
-                    >
-                      Read more <ArrowRight className="size-4" />
-                    </Link>
-                  </div>
-                </article>
-              </section>
-            )}
-
-            {!!props.categoryCards?.length && (
-              <section>
-                <h2 className="mb-4 text-2xl font-extrabold tracking-tight">
-                  {props.categoriesHeading}
-                </h2>
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  {props.categoryCards.map((category) => {
-                    const Icon = iconMap[category.icon]
-                    return (
-                      <article
-                        className={`rounded-xl border p-5 text-center ${toneClasses[category.tone]}`}
-                        key={category.id || category.title}
-                      >
-                        <span className="mx-auto grid size-11 place-items-center rounded-full bg-white/80">
-                          <Icon aria-hidden className="size-5" />
-                        </span>
-                        <h3 className="mt-4 font-extrabold text-slate-950">{category.title}</h3>
-                        <p className="mt-2 text-sm leading-6 text-slate-600">
-                          {category.description}
-                        </p>
-                        <Link
-                          className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-blue-700"
-                          href={category.url}
-                        >
-                          {category.linkLabel} <ArrowRight className="size-3" />
-                        </Link>
-                      </article>
-                    )
-                  })}
-                </div>
-              </section>
-            )}
-
-            {!!latestPosts.length && (
-              <section>
-                <div className="mb-4 flex items-center justify-between gap-4">
-                  <h2 className="text-2xl font-extrabold tracking-tight">{props.latestHeading}</h2>
-                  <Link
-                    className="text-sm font-semibold text-blue-700 hover:text-blue-900"
-                    href="/posts"
-                  >
-                    View all posts →
-                  </Link>
-                </div>
-                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                  {latestPosts.slice(0, 6).map((post) => (
-                    <article
-                      className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-                      key={post.id}
-                    >
-                      <PostImage className="aspect-[16/9]" post={post} />
-                      <div className="p-5">
-                        <h3 className="font-extrabold leading-snug">
-                          <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-                        </h3>
-                        {post.meta?.description && (
-                          <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
-                            {post.meta.description}
-                          </p>
-                        )}
-                        <Link
-                          className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-blue-700"
-                          href={`/posts/${post.slug}`}
-                        >
-                          Read more <ArrowRight className="size-3" />
-                        </Link>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </section>
-            )}
-          </main>
-
-          <aside className="space-y-5">
-            <section className="overflow-hidden rounded-xl border border-amber-100 bg-amber-50/70">
-              <h2 className="border-b border-amber-100 px-5 py-4 text-lg font-extrabold">
-                {props.recommendation.heading}
-              </h2>
-              <div className="p-5">
-                {props.recommendation.image && typeof props.recommendation.image === 'object' && (
-                  <Media
-                    className="mb-4 overflow-hidden rounded-lg"
-                    resource={props.recommendation.image}
-                  />
-                )}
-                <h3 className="text-xl font-extrabold">{props.recommendation.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  {props.recommendation.description}
-                </p>
-                <ul className="mt-4 space-y-2">
-                  {props.recommendation.benefits?.map((benefit) => (
-                    <li
-                      className="flex gap-2 text-sm text-slate-700"
-                      key={benefit.id || benefit.text}
-                    >
-                      <CheckCircle2
-                        aria-hidden
-                        className="mt-0.5 size-4 shrink-0 text-emerald-600"
-                      />{' '}
-                      {benefit.text}
-                    </li>
-                  ))}
-                </ul>
                 <Link
-                  className="mt-5 flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#ff5a47] px-4 py-3 text-center font-bold text-white"
-                  href={props.recommendation.url}
-                  rel="sponsored nofollow"
+                  href="/editorial-policy"
+                  className="mt-8 flex items-center justify-between border-t border-[#cdd3bf] pt-5 text-sm"
                 >
-                  {props.recommendation.buttonLabel} <ArrowRight className="size-4" />
+                  Get to know our approach <ArrowUpRight className="size-4" />
                 </Link>
-                <p className="mt-3 text-xs leading-5 text-slate-500">
-                  {props.recommendation.disclosure}
-                </p>
-              </div>
-            </section>
-
-            <section className="rounded-xl border border-blue-100 bg-blue-50 p-5">
-              <h2 className="text-lg font-extrabold">{props.newsletter.heading}</h2>
-              {props.newsletter.description && (
-                <p className="mt-1 text-sm leading-6 text-slate-600">
-                  {props.newsletter.description}
-                </p>
-              )}
-              <NewsletterSignup
-                buttonLabel={props.newsletter.buttonLabel}
-                formID={formID || undefined}
-                placeholder={props.newsletter.placeholder}
-                privacyNote={props.newsletter.privacyNote}
-              />
-            </section>
-
-            {!!recentPosts.length && (
-              <section className="rounded-xl border border-slate-200 bg-white p-5">
-                <h2 className="mb-4 text-lg font-extrabold">Recent posts</h2>
-                <div className="divide-y divide-slate-100">
-                  {recentPosts.map((post) => (
-                    <Link
-                      className="block py-3 text-sm font-semibold leading-5 hover:text-blue-700"
-                      href={`/posts/${post.slug}`}
-                      key={post.id}
-                    >
-                      {post.title}
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
-          </aside>
-        </div>
+              </aside>
+            </div>
+          ) : (
+            <p className="py-10 text-[#626b60]">
+              Our first buying guides are on their way. Explore our approach to thoughtful shopping
+              below.
+            </p>
+          )}
+        </section>
+        <section className="border-y border-[#deded3] py-10">
+          <div className="grid gap-6 lg:grid-cols-[1fr_3fr]">
+            <div>
+              <p className="eyebrow">Follow your curiosity</p>
+              <h2 className="font-editorial mt-2 text-3xl">A good place to start.</h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  title: 'Kitchen & home',
+                  text: 'For the spaces you use every day.',
+                  href: '/posts?category=kitchen',
+                  icon: CookingPot,
+                },
+                {
+                  title: 'Sleep & comfort',
+                  text: 'Find your own kind of comfortable.',
+                  href: '/posts?category=sleep-comfort',
+                  icon: BedDouble,
+                },
+                {
+                  title: 'Buying guides',
+                  text: 'A little homework before checkout.',
+                  href: '/posts?category=buying-guides',
+                  icon: BookOpen,
+                },
+              ].map(({ title, text, href, icon: Icon }) => (
+                <Link
+                  key={title}
+                  href={href}
+                  className="group flex items-center gap-4 border border-[#deded3] p-5 transition hover:bg-[#eeefe5]"
+                >
+                  <Icon className="size-7 shrink-0 text-[#7a866a]" strokeWidth={1.3} />
+                  <div>
+                    <h3 className="font-editorial text-xl">{title}</h3>
+                    <p className="mt-1 text-xs text-[#626b60]">{text}</p>
+                  </div>
+                  <ArrowUpRight className="ml-auto size-4 shrink-0" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+        {posts.length > 1 && (
+          <section className="py-14">
+            <p className="eyebrow">Something worth knowing</p>
+            <h2 className="font-editorial mb-7 mt-2 text-4xl tracking-tight">More useful reads</h2>
+            <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+              {posts
+                .filter((p) => p.id !== featured?.id)
+                .slice(0, 3)
+                .map((post) => (
+                  <PostCard post={post} key={post.id} />
+                ))}
+            </div>
+          </section>
+        )}
+        <section className="mb-12 mt-5 flex flex-col items-start justify-between gap-6 bg-[#233d32] p-8 text-[#faf9f5] sm:flex-row sm:items-center sm:p-12">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.18em] text-[#c9d2ba]">
+              A note on transparency
+            </p>
+            <h2 className="font-editorial mt-3 text-3xl">Your trust comes first.</h2>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-[#d9dfd1]">
+              Some links may earn us a commission. We explain commercial relationships so you can
+              make your own informed choice.
+            </p>
+          </div>
+          <Link
+            href="/affiliate-disclosure"
+            className="inline-flex shrink-0 items-center gap-3 border-b border-[#899984] pb-2 text-sm"
+          >
+            How affiliate links work <ArrowUpRight className="size-4" />
+          </Link>
+        </section>
       </div>
-    </section>
+    </div>
   )
 }

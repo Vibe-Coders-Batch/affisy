@@ -2,14 +2,12 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
+import { site } from '@/utilities/site'
 
 const getPagesSitemap = unstable_cache(
   async () => {
     const payload = await getPayload({ config })
-    const SITE_URL =
-      process.env.NEXT_PUBLIC_SERVER_URL ||
-      process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-      'https://example.com'
+    const SITE_URL = site.url
 
     const results = await payload.find({
       collection: 'pages',
@@ -32,8 +30,9 @@ const getPagesSitemap = unstable_cache(
     const dateFallback = new Date().toISOString()
 
     const defaultSitemap = [
+      { loc: `${SITE_URL}/affiliate-disclosure` },
       {
-        loc: `${SITE_URL}/search`,
+        loc: `${SITE_URL}/editorial-policy`,
         lastmod: dateFallback,
       },
       {

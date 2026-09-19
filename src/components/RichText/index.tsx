@@ -21,6 +21,8 @@ import type {
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
+import { createElement } from 'react'
+import { headingID, nodeText } from '@/utilities/article'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -57,21 +59,49 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 
 type Props = {
   data: DefaultTypedEditorState
+  articleHeadings?: boolean
   enableGutter?: boolean
   enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props
+  const {
+    className,
+    articleHeadings = false,
+    enableProse = true,
+    enableGutter = true,
+    ...rest
+  } = props
+  const used = new Map<string, number>()
+  const converters: JSXConvertersFunction<NodeTypes> = (args) => ({
+    ...jsxConverters(args),
+    ...(articleHeadings
+      ? {
+          heading: ({ node, nodesToJSX }) => {
+            if (!['h2', 'h3'].includes(node.tag))
+              return createElement(node.tag, {}, nodesToJSX({ nodes: node.children }))
+            const base = headingID(nodeText(node))
+            const count = (used.get(base) || 0) + 1
+            used.set(base, count)
+            return createElement(
+              node.tag,
+              { id: count === 1 ? base : `${base}-${count}` },
+              nodesToJSX({ nodes: node.children }),
+            )
+          },
+        }
+      : {}),
+  })
   return (
     <ConvertRichText
-      converters={jsxConverters}
+      converters={converters}
       className={cn(
         'payload-richtext',
         {
           container: enableGutter,
           'max-w-none': !enableGutter,
-          'mx-auto prose md:prose-md dark:prose-invert': enableProse,
+          'mx-auto prose md:prose-md': enableProse,
+          'dark:prose-invert': enableProse && !articleHeadings,
         },
         className,
       )}

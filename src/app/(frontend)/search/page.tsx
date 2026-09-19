@@ -18,8 +18,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
-    collection: 'search',
+    collection: 'posts',
     depth: 1,
+    overrideAccess: false,
+    draft: false,
     limit: 12,
     select: {
       title: true,
@@ -63,8 +65,8 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     <div className="pt-24 pb-24">
       <PageClient />
       <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none text-center">
-          <h1 className="mb-8 lg:mb-16">Search</h1>
+        <div className="prose max-w-none text-center">
+          <h1 className="font-editorial mb-8 text-5xl">Find your next useful read.</h1>
 
           <div className="max-w-[50rem] mx-auto">
             <Search />
@@ -83,6 +85,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Search`,
+    title: `Search the journal | ShoppeCove`,
+    robots: { index: false, follow: true },
   }
 }

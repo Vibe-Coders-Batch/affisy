@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     localPatterns: [
+      { pathname: '/images/**' },
       {
         pathname: '/api/media/file/**',
       },
@@ -30,7 +31,7 @@ const nextConfig: NextConfig = {
         pathname: '/affiliate-hero.png',
       },
     ],
-    qualities: [100],
+    qualities: [75, 100],
     remotePatterns: [
       ...remoteImageURLs.map((item) => {
         const url = new URL(item)

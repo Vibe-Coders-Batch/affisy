@@ -17,10 +17,12 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
     "seed:affiliate": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/seed-affiliate.ts",
+    "seed:clickbank": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/seed-clickbank-offers.ts",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
-    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
+    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
+    "setup:shoppecove": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/setup-shoppecove.ts"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.88.0",

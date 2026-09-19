@@ -1,5 +1,4 @@
-import { BarChart3 } from 'lucide-react'
-import React from 'react'
+import { Waves } from 'lucide-react'
 
 interface Props {
   className?: string
@@ -7,22 +6,11 @@ interface Props {
   priority?: 'auto' | 'high' | 'low'
 }
 
-export const Logo = (props: Props) => {
-  const { className } = props
-
-  return (
-    <span className={['inline-flex items-center gap-2 text-slate-950', className].join(' ')}>
-      <span className="grid size-10 place-items-center rounded-lg bg-blue-700 text-white">
-        <BarChart3 aria-hidden className="size-6" strokeWidth={2.5} />
-      </span>
-      <span className="leading-none">
-        <strong className="block text-xl tracking-[-0.03em]">
-          Affiliate<span className="text-blue-700">Path</span>
-        </strong>
-        <small className="mt-1 block text-[10px] font-medium tracking-[0.08em] text-slate-500">
-          LEARN · GROW · EARN ONLINE
-        </small>
-      </span>
+export const Logo = ({ className = '' }: Props) => (
+  <span className={`inline-flex items-center gap-2.5 text-[#233d32] ${className}`}>
+    <Waves aria-hidden className="size-8" strokeWidth={1.6} />
+    <span className="font-editorial text-[29px] leading-none tracking-[-0.06em]">
+      ShoppeCove<span className="text-[#b7704f]">.</span>
     </span>
-  )
-}
+  </span>
+)

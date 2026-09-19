@@ -1,53 +1,69 @@
 'use client'
 
-import React from 'react'
-
-import type { Header as HeaderType } from '@/payload-types'
-
-import { CMSLink } from '@/components/Link'
+import { useState } from 'react'
 import Link from 'next/link'
-import { SearchIcon } from 'lucide-react'
+import { Menu, Search, X } from 'lucide-react'
+import type { Header as HeaderType } from '@/payload-types'
+import { CMSLink } from '@/components/Link'
 
-export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
-  const navItems = data?.navItems || []
+const links = [
+  { href: '/posts', label: 'The journal' },
+  { href: '/posts?category=kitchen', label: 'Kitchen & home' },
+  { href: '/posts?category=sleep-comfort', label: 'Sleep & comfort' },
+  { href: '/editorial-policy', label: 'Our approach' },
+]
 
+export const HeaderNav = ({ data }: { data: HeaderType }) => {
+  const [open, setOpen] = useState(false)
   return (
-    <div className="flex min-w-0 items-center gap-6">
-      <nav className="hidden items-center gap-6 lg:flex">
-        {navItems.map(({ link }, i) => (
-          <CMSLink
-            className="text-sm font-semibold text-slate-700 hover:text-blue-700"
-            key={i}
-            {...link}
-            appearance="link"
-          />
+    <>
+      <nav aria-label="Main navigation" className="hidden items-center gap-7 lg:flex">
+        {links.map((link) => (
+          <Link key={link.href} href={link.href} className="text-sm hover:text-[#a25a3c]">
+            {link.label}
+          </Link>
+        ))}
+        {data.navItems?.map(({ link }, i) => (
+          <CMSLink key={i} {...link} className="text-sm" />
         ))}
       </nav>
-      <form action="/search" className="relative hidden xl:block">
-        <label className="sr-only" htmlFor="site-search">
-          Search articles
-        </label>
-        <input
-          className="h-10 w-72 rounded-lg border border-slate-300 bg-white pl-4 pr-10 text-sm outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-          id="site-search"
-          name="q"
-          placeholder="Search articles..."
-        />
+      <div className="flex items-center gap-3">
+        <Link href="/search" aria-label="Search articles" className="p-2">
+          <Search className="size-5" strokeWidth={1.5} />
+        </Link>
         <button
-          aria-label="Submit search"
-          className="absolute right-0 top-0 grid size-10 place-items-center text-slate-600"
-          type="submit"
+          className="p-2 lg:hidden"
+          aria-label={open ? 'Close navigation' : 'Open navigation'}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
+          onClick={() => setOpen(!open)}
         >
-          <SearchIcon className="size-5" />
+          {open ? <X /> : <Menu />}
         </button>
-      </form>
-      <Link
-        aria-label="Search"
-        className="grid size-10 place-items-center rounded-lg border border-slate-200 xl:hidden"
-        href="/search"
-      >
-        <SearchIcon className="size-5" />
-      </Link>
-    </div>
+      </div>
+      {open && (
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="absolute inset-x-0 top-full border-b border-[#deded3] bg-[#faf9f5] px-6 py-5 shadow-sm lg:hidden"
+        >
+          {[...links].map((link) => (
+            <Link
+              className="block py-3"
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          {data.navItems?.map(({ link }, i) => (
+            <div className="py-3" key={i} onClick={() => setOpen(false)}>
+              <CMSLink {...link} />
+            </div>
+          ))}
+        </nav>
+      )}
+    </>
   )
 }

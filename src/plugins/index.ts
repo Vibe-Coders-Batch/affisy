@@ -12,7 +12,7 @@ import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
-import { getServerSideURL } from '@/utilities/getURL'
+import { siteURL } from '@/utilities/site'
 
 const r2Environment = {
   accessKeyId: process.env.R2_ACCESS_KEY_ID,
@@ -31,13 +31,13 @@ if (process.env.R2_BUCKET && !hasR2Configuration) {
 }
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | ShoppeCove` : 'ShoppeCove'
 }
 
-const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
-  const url = getServerSideURL()
-
-  return doc?.slug ? `${url}/${doc.slug}` : url
+const generateURL: GenerateURL<Post | Page> = ({ doc, collectionSlug }) => {
+  return siteURL(
+    doc?.slug === 'home' ? '/' : `/${collectionSlug === 'posts' ? 'posts/' : ''}${doc?.slug || ''}`,
+  )
 }
 
 export const plugins: Plugin[] = [

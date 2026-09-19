@@ -1,73 +1,75 @@
-import { formatDateTime } from 'src/utilities/formatDateTime'
-import React from 'react'
-
+import Link from 'next/link'
+import { Clock3 } from 'lucide-react'
 import type { Post } from '@/payload-types'
-
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
+import { articleDetails } from '@/utilities/article'
 
-export const PostHero: React.FC<{
-  post: Post
-}> = ({ post }) => {
-  const { categories, heroImage, populatedAuthors, publishedAt, title } = post
-
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
-
+export const PostHero = ({ post }: { post: Post }) => {
+  const author = formatAuthors(post.populatedAuthors || []) || 'ShoppeCove editorial'
+  const date = post.publishedAt
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
-            {categories?.map((category, index) => {
-              if (typeof category === 'object' && category !== null) {
-                const { title: categoryTitle } = category
-
-                const titleToUse = categoryTitle || 'Untitled category'
-
-                const isLast = index === categories.length - 1
-
-                return (
-                  <React.Fragment key={index}>
-                    {titleToUse}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                  </React.Fragment>
-                )
-              }
-              return null
-            })}
-          </div>
-
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
+    <header className="container">
+      <nav aria-label="Breadcrumb" className="mb-10 flex flex-wrap gap-2 text-xs text-[#626b60]">
+        <Link href="/">Home</Link>
+        <span aria-hidden>/</span>
+        <Link href="/posts">The journal</Link>
+        <span aria-hidden>/</span>
+        <span aria-current="page">{post.title}</span>
+      </nav>
+      <div className="mx-auto max-w-4xl text-center">
+        <div className="eyebrow flex flex-wrap justify-center gap-4">
+          {post.categories?.map(
+            (c) =>
+              typeof c === 'object' && (
+                <Link key={c.id} href={`/posts?category=${encodeURIComponent(c.slug || '')}`}>
+                  {c.title}
+                </Link>
+              ),
+          )}
+        </div>
+        <h1 className="font-editorial mt-5 text-4xl leading-[1.1] tracking-[-0.035em] sm:text-5xl lg:text-6xl">
+          {post.title}
+        </h1>
+        {post.meta?.description && (
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#626b60]">
+            {post.meta.description}
+          </p>
+        )}
+        <div className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-[#626b60]">
+          <span>By {author}</span>
+          {date && (
+            <time dateTime={date}>
+              {new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+                timeZone: 'UTC',
+              }).format(new Date(date))}
+            </time>
+          )}
+          <span className="inline-flex items-center gap-1.5">
+            <Clock3 className="size-3.5" />
+            {articleDetails(post.content).readingMinutes} min read
+          </span>
         </div>
       </div>
-      <div className="min-h-[80vh] select-none">
-        {heroImage && typeof heroImage !== 'string' && (
-          <Media fill priority imgClassName="-z-10 object-cover" resource={heroImage} />
-        )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-linear-to-t from-black to-transparent" />
-      </div>
-    </div>
+      {post.heroImage && typeof post.heroImage === 'object' && (
+        <figure className="mx-auto mt-10 max-w-5xl">
+          <div className="relative aspect-[16/7] overflow-hidden bg-[#e9eadd]">
+            <Media
+              fill
+              priority
+              imgClassName="object-cover"
+              resource={post.heroImage}
+              size="(max-width: 1024px) 100vw, 1024px"
+            />
+          </div>
+          {post.imageCaption && (
+            <figcaption className="mt-2 text-xs text-[#626b60]">{post.imageCaption}</figcaption>
+          )}
+        </figure>
+      )}
+    </header>
   )
 }

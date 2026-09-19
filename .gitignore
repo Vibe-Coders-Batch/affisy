@@ -21,3 +21,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Local CMS setup backups
+.local-backups/

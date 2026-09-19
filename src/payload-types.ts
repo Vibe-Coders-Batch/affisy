@@ -253,6 +253,38 @@ export interface Post {
     image?: (string | null) | Media;
     description?: string | null;
   };
+  /**
+   * Image credit or illustration disclosure, shown below the hero image.
+   */
+  imageCaption?: string | null;
+  review?: {
+    summary?: string | null;
+    /**
+     * State whether you tested the product or used seller information. Do not imply hands-on testing without evidence.
+     */
+    basis?: string | null;
+    advantages?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    considerations?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    affiliateURL?: string | null;
+    linkLabel?: string | null;
+    sources?:
+      | {
+          title: string;
+          url: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   publishedAt?: string | null;
   authors?: (string | User)[] | null;
   populatedAuthors?:
@@ -1327,6 +1359,34 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+      };
+  imageCaption?: T;
+  review?:
+    | T
+    | {
+        summary?: T;
+        basis?: T;
+        advantages?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        considerations?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        affiliateURL?: T;
+        linkLabel?: T;
+        sources?:
+          | T
+          | {
+              title?: T;
+              url?: T;
+              id?: T;
+            };
       };
   publishedAt?: T;
   authors?: T;
