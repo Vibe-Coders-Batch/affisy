@@ -40,7 +40,7 @@ const getPostsSitemap = unstable_cache(
 
     return sitemap
   },
-  ['posts-sitemap'],
+  ['posts-sitemap', site.url],
   {
     tags: ['posts-sitemap'],
   },
