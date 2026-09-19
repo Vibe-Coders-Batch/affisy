@@ -18,7 +18,9 @@ describe('ShoppeCove editorial SEO', () => {
       },
     })
     expect(meta.title).toBe('Knife guide | ShoppeCove')
-    expect(meta.alternates?.canonical).toBe('https://shoppecove.com/posts/matsato-osuren-review')
+    expect(meta.alternates?.canonical).toBe(
+      'https://blogs.shoppercove.com/posts/matsato-osuren-review',
+    )
     expect(meta.openGraph?.url).toBe(meta.alternates?.canonical)
     expect(meta.openGraph?.images).toEqual([{ url: 'https://cdn.example.com/knife.webp' }])
     expect(meta.robots).toEqual({ index: false, follow: false })
@@ -26,7 +28,7 @@ describe('ShoppeCove editorial SEO', () => {
   it('canonicalizes home to the root and marks missing documents noindex', async () => {
     expect(
       (await generateMeta({ doc: { slug: 'home', title: 'Home' } })).alternates?.canonical,
-    ).toBe('https://shoppecove.com/')
+    ).toBe('https://blogs.shoppercove.com/')
     expect((await generateMeta({ doc: null })).robots).toEqual({ index: false, follow: false })
   })
   it('gives repeated headings stable, distinct anchors and estimates reading time', () => {

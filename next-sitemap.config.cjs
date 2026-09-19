@@ -1,4 +1,7 @@
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://shoppecove.com').replace(/\/$/, '')
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://blogs.shoppercove.com').replace(
+  /\/$/,
+  '',
+)
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {

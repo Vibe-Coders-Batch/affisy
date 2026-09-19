@@ -8,7 +8,7 @@ ShoppeCove is a US-focused shopping journal for home, kitchen, and everyday comf
 
 - Magazine-style homepage, mobile menu, journal filters, and article layout.
 - Article contents navigation, reading time, research basis, summary, considerations, sources, and optional affiliate CTA.
-- Canonical URLs use `NEXT_PUBLIC_SITE_URL` (default `https://shoppecove.com`), independently of the development server address.
+- Canonical URLs use `NEXT_PUBLIC_SITE_URL` (default `https://blogs.shoppercove.com`), independently of the development server address.
 - Article and breadcrumb structured data; social metadata; published-only sitemaps; noindex for search, category filters, and draft previews.
 - Matsato is published in the CMS with the supplied ClickBank HopLink and `traffic_source=blog`. Derila Ergo and the online-shopping checklist remain drafts. Website deployment is still a separate step.
 - No invented ratings, hands-on results, prices, or tracked affiliate links. The kitchen hero is a labeled AI illustration and does not depict either advertised product.
@@ -27,8 +27,8 @@ The existing published affiliate-marketing demo posts were preserved. They curre
 
 ## Before going live
 
-- Connect the domain and HTTPS. During this work, `shoppecove.com` did not resolve in either the browser or the network check.
-- Deploy this repository using the existing hosting setup. Set `NEXT_PUBLIC_SERVER_URL` and `NEXT_PUBLIC_SITE_URL` to `https://shoppecove.com` in production.
+- `blogs.shoppercove.com` is connected to Vercel and serves the site over HTTPS.
+- Set `NEXT_PUBLIC_SERVER_URL` and `NEXT_PUBLIC_SITE_URL` to `https://blogs.shoppercove.com` in production.
 - Review the site's existing contact and privacy pages. The current app has no email adapter configured, so newsletter delivery is not ready; the new homepage does not display a signup promise.
 - Verify Search Console ownership and submit `/sitemap.xml` after deployment. Review actual indexing, search queries, and clicks before expanding content.
 - Test a published article, images, mobile navigation, canonical URL, structured data, and affiliate CTA on the production domain.
