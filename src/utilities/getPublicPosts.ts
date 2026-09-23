@@ -1,5 +1,4 @@
-import config from '@payload-config'
-import { getPayload, type Where } from 'payload'
+import type { Where } from 'payload'
 import { unstable_cache } from 'next/cache'
 
 export const publicPostsTag = 'public-post-cards'
@@ -8,6 +7,11 @@ export const publicPostsTag = 'public-post-cards'
 // Keep the existing non-Cache-Components setup used by this Payload application.
 export const getPublicPosts = unstable_cache(
   async (category = '', page = 1, limit = 12, query = '', id = '') => {
+    // Load the CMS only on a cache miss, after the results boundary can stream.
+    const [{ default: config }, { getPayload }] = await Promise.all([
+      import('@payload-config'),
+      import('payload'),
+    ])
     const payload = await getPayload({ config })
     const where: Where = { _status: { equals: 'published' } }
     if (category) {
