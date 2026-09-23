@@ -259,6 +259,8 @@ export interface Post {
   imageCaption?: string | null;
   review?: {
     summary?: string | null;
+    bestFor?: string | null;
+    considerAlternative?: string | null;
     /**
      * State whether you tested the product or used seller information. Do not imply hands-on testing without evidence.
      */
@@ -277,6 +279,12 @@ export interface Post {
       | null;
     affiliateURL?: string | null;
     linkLabel?: string | null;
+    ctaTitle?: string | null;
+    ctaDescription?: string | null;
+    /**
+     * Copy the exact H2 heading. The link appears at the end of that section. Leave blank to place it midway through articles with at least four H2 sections. If the heading is missing or last, only the summary and closing links appear.
+     */
+    ctaAfterHeading?: string | null;
     sources?:
       | {
           title: string;
@@ -1365,6 +1373,8 @@ export interface PostsSelect<T extends boolean = true> {
     | T
     | {
         summary?: T;
+        bestFor?: T;
+        considerAlternative?: T;
         basis?: T;
         advantages?:
           | T
@@ -1380,6 +1390,9 @@ export interface PostsSelect<T extends boolean = true> {
             };
         affiliateURL?: T;
         linkLabel?: T;
+        ctaTitle?: T;
+        ctaDescription?: T;
+        ctaAfterHeading?: T;
         sources?:
           | T
           | {

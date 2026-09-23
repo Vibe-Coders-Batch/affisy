@@ -60,6 +60,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 type Props = {
   data: DefaultTypedEditorState
   articleHeadings?: boolean
+  headingIDs?: string[]
   enableGutter?: boolean
   enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
@@ -68,11 +69,13 @@ export default function RichText(props: Props) {
   const {
     className,
     articleHeadings = false,
+    headingIDs,
     enableProse = true,
     enableGutter = true,
     ...rest
   } = props
   const used = new Map<string, number>()
+  let headingIndex = 0
   const converters: JSXConvertersFunction<NodeTypes> = (args) => ({
     ...jsxConverters(args),
     ...(articleHeadings
@@ -85,7 +88,7 @@ export default function RichText(props: Props) {
             used.set(base, count)
             return createElement(
               node.tag,
-              { id: count === 1 ? base : `${base}-${count}` },
+              { id: headingIDs?.[headingIndex++] || (count === 1 ? base : `${base}-${count}`) },
               nodesToJSX({ nodes: node.children }),
             )
           },

@@ -6,11 +6,11 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import RichText from '@/components/RichText'
+import { ArticleBody } from '@/components/Editorial/ArticleBody'
+import { OfferCTA, ReviewSummary } from '@/components/Editorial/OfferCTA'
 
 import type { Post } from '@/payload-types'
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
 import { articleDetails, jsonLD } from '@/utilities/article'
 import { site, siteURL, mediaURL } from '@/utilities/site'
 
@@ -105,21 +105,40 @@ export default async function Post({ params: paramsPromise }: Args) {
       <div className="container mt-12 grid items-start gap-10 lg:grid-cols-[220px_minmax(0,740px)] lg:justify-center lg:gap-14">
         <aside className="lg:sticky lg:top-28">
           {!!headings.length && (
-            <nav aria-label="In this article" className="border-y border-[#deded3] py-5">
-              <h2 className="eyebrow mb-4">In this article</h2>
-              <ol className="space-y-3">
-                {headings.map((h) => (
-                  <li key={h.id} className={h.tag === 'h3' ? 'pl-3' : ''}>
-                    <a
-                      href={`#${h.id}`}
-                      className="text-xs leading-5 text-[#626b60] hover:text-[#233d32]"
-                    >
-                      {h.text}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
+            <>
+              <details className="border-y border-[#deded3] py-4 lg:hidden">
+                <summary className="cursor-pointer text-sm font-medium">Jump to a section</summary>
+                <nav aria-label="In this article" className="mt-4">
+                  <ol className="space-y-3">
+                    {headings.map((h) => (
+                      <li key={h.id} className={h.tag === 'h3' ? 'pl-3' : ''}>
+                        <a href={`#${h.id}`} className="block py-1 text-sm text-[#626b60]">
+                          {h.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </details>
+              <nav
+                aria-label="In this article"
+                className="hidden border-y border-[#deded3] py-5 lg:block"
+              >
+                <h2 className="eyebrow mb-4">In this article</h2>
+                <ol className="space-y-3">
+                  {headings.map((h) => (
+                    <li key={h.id} className={h.tag === 'h3' ? 'pl-3' : ''}>
+                      <a
+                        href={`#${h.id}`}
+                        className="text-xs leading-5 text-[#626b60] hover:text-[#233d32]"
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </>
           )}
           <p className="mt-5 text-xs leading-6 text-[#626b60]">
             Some links may earn us a commission at no additional cost to you.{' '}
@@ -135,18 +154,8 @@ export default async function Post({ params: paramsPromise }: Args) {
               {review.basis}
             </div>
           )}
-          {review?.summary && (
-            <section className="mb-10 bg-[#ecefe3] p-7">
-              <h2 className="eyebrow">At a glance</h2>
-              <p className="font-editorial mt-3 text-2xl leading-snug">{review.summary}</p>
-            </section>
-          )}
-          <RichText
-            className="article-body max-w-none"
-            data={post.content}
-            enableGutter={false}
-            articleHeadings
-          />
+          <ReviewSummary review={review} />
+          <ArticleBody content={post.content} review={review} />
           {!!(review?.advantages?.length || review?.considerations?.length) && (
             <section className="my-10 grid gap-6 sm:grid-cols-2">
               {[
@@ -166,27 +175,7 @@ export default async function Post({ params: paramsPromise }: Args) {
               )}
             </section>
           )}
-          {review?.affiliateURL && (
-            <section className="my-10 bg-[#233d32] p-7 text-[#faf9f5]">
-              <p className="eyebrow !text-[#c9d2ba]">Visit the seller</p>
-              <h2 className="font-editorial mt-3 text-3xl">Make sure it fits your needs.</h2>
-              <p className="mt-3 text-sm leading-7 text-[#d9dfd1]">
-                Check the current offer, total cost, and refund terms before ordering.
-              </p>
-              <a
-                href={review.affiliateURL}
-                rel="sponsored nofollow noopener noreferrer"
-                target="_blank"
-                className="mt-5 inline-flex items-center gap-3 bg-[#faf9f5] px-5 py-3 text-sm text-[#233d32]"
-              >
-                {review.linkLabel || 'Check price & availability'}
-                <ArrowUpRight className="size-4" />
-              </a>
-              <p className="mt-3 text-xs text-[#d9dfd1]">
-                Affiliate link. We may receive a commission if you buy.
-              </p>
-            </section>
-          )}
+          <OfferCTA review={review} placement="verdict" />
           {!!review?.sources?.length && (
             <section className="mt-10 border-t border-[#deded3] pt-6">
               <h2 className="eyebrow">Sources & further reading</h2>

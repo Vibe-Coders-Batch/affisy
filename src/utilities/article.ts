@@ -31,3 +31,16 @@ export function articleDetails(content: Post['content']) {
 }
 
 export const jsonLD = (data: unknown) => JSON.stringify(data).replace(/</g, '\\u003c')
+
+// Insert between complete H2 sections, never between a heading and its explanation.
+export function articleOfferSplit(content: Post['content'], afterHeading?: string | null) {
+  const sections = content.root.children.flatMap((node, index) =>
+    node.type === 'heading' && node.tag === 'h2' ? [{ index, text: nodeText(node) }] : [],
+  )
+  if (afterHeading?.trim()) {
+    const selected = sections.findIndex(({ text }) => text === afterHeading.trim())
+    return selected < 0 ? -1 : (sections[selected + 1]?.index ?? -1)
+  }
+  // Short articles keep only the summary and closing links.
+  return sections.length >= 4 ? sections[Math.floor(sections.length / 2)].index : -1
+}

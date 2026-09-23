@@ -176,6 +176,8 @@ export const Posts: CollectionConfig<'posts'> = {
       label: 'Product guide & affiliate link',
       fields: [
         { name: 'summary', type: 'textarea', label: 'At a glance' },
+        { name: 'bestFor', type: 'textarea', label: 'Worth considering if' },
+        { name: 'considerAlternative', type: 'textarea', label: 'Consider another option if' },
         {
           name: 'basis',
           type: 'textarea',
@@ -209,6 +211,17 @@ export const Posts: CollectionConfig<'posts'> = {
           },
         },
         { name: 'linkLabel', type: 'text', defaultValue: 'Check price & availability' },
+        { name: 'ctaTitle', type: 'text', label: 'Product link heading' },
+        { name: 'ctaDescription', type: 'textarea', label: 'Product link explanation' },
+        {
+          name: 'ctaAfterHeading',
+          type: 'text',
+          label: 'Place the in-article product link after this section',
+          admin: {
+            description:
+              'Copy the exact H2 heading. The link appears at the end of that section. Leave blank to place it midway through articles with at least four H2 sections. If the heading is missing or last, only the summary and closing links appear.',
+          },
+        },
         {
           name: 'sources',
           type: 'array',
