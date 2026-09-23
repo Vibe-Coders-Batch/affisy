@@ -1,9 +1,9 @@
 import type { Metadata } from 'next/types'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import React from 'react'
+import { getPublicPosts } from '@/utilities/getPublicPosts'
+import { PostGridSkeleton } from '@/components/Editorial/Loading'
+import React, { Suspense } from 'react'
 import { Search } from '@/search/Component'
 import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
@@ -15,51 +15,6 @@ type Args = {
 }
 export default async function Page({ searchParams: searchParamsPromise }: Args) {
   const { q: query } = await searchParamsPromise
-  const payload = await getPayload({ config: configPromise })
-
-  const posts = await payload.find({
-    collection: 'posts',
-    depth: 1,
-    overrideAccess: false,
-    draft: false,
-    limit: 12,
-    select: {
-      title: true,
-      slug: true,
-      categories: true,
-      meta: true,
-    },
-    // pagination: false reduces overhead if you don't need totalDocs
-    pagination: false,
-    ...(query
-      ? {
-          where: {
-            or: [
-              {
-                title: {
-                  like: query,
-                },
-              },
-              {
-                'meta.description': {
-                  like: query,
-                },
-              },
-              {
-                'meta.title': {
-                  like: query,
-                },
-              },
-              {
-                slug: {
-                  like: query,
-                },
-              },
-            ],
-          },
-        }
-      : {}),
-  })
 
   return (
     <div className="pt-24 pb-24">
@@ -69,17 +24,35 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
           <h1 className="font-editorial mb-8 text-5xl">Find your next useful read.</h1>
 
           <div className="max-w-[50rem] mx-auto">
-            <Search />
+            <Search initialQuery={query || ''} />
           </div>
         </div>
       </div>
 
+      <Suspense
+        key={query || ''}
+        fallback={
+          <div className="container">
+            <PostGridSkeleton />
+          </div>
+        }
+      >
+        <SearchResults query={query || ''} />
+      </Suspense>
+    </div>
+  )
+}
+
+async function SearchResults({ query }: { query: string }) {
+  const posts = await getPublicPosts('', 1, 12, query.trim())
+  return (
+    <>
       {posts.totalDocs > 0 ? (
         <CollectionArchive posts={posts.docs as CardPostData[]} />
       ) : (
         <div className="container">No results found.</div>
       )}
-    </div>
+    </>
   )
 }
 

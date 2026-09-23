@@ -10,12 +10,14 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { revalidatePostCards, revalidateDeletedPostCards } from '@/hooks/revalidatePostCards'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  hooks: { afterChange: [revalidatePostCards], afterDelete: [revalidateDeletedPostCards] },
   folders: true,
   access: {
     create: authenticated,

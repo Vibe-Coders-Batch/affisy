@@ -1,4 +1,3 @@
-import configPromise from '@payload-config'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -11,37 +10,20 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getPayload } from 'payload'
+import { getPublicPosts } from '@/utilities/getPublicPosts'
 import { Media } from '@/components/Media'
 import { PostCard } from '@/components/Editorial/PostCard'
 import type { AffiliateHomeBlock as Props } from '@/payload-types'
 
 export async function AffiliateHomeBlock(props: Props) {
-  const payload = await getPayload({ config: configPromise })
-  const { docs: posts } = await payload.find({
-    collection: 'posts',
-    depth: 1,
-    draft: false,
-    limit: props.latestLimit || 6,
-    overrideAccess: false,
-    sort: '-publishedAt',
-    where: { _status: { equals: 'published' } },
-  })
-  // Only use a featured relationship if it is still publicly published.
   const featuredID =
     typeof props.featuredPost === 'object' ? props.featuredPost?.id : props.featuredPost
-  const featured =
-    (featuredID
-      ? (
-          await payload.find({
-            collection: 'posts',
-            limit: 1,
-            depth: 1,
-            overrideAccess: false,
-            where: { and: [{ id: { equals: featuredID } }, { _status: { equals: 'published' } }] },
-          })
-        ).docs[0]
-      : undefined) || posts[0]
+  const [latest, selected] = await Promise.all([
+    getPublicPosts('', 1, props.latestLimit || 6),
+    featuredID ? getPublicPosts('', 1, 1, '', featuredID) : Promise.resolve(null),
+  ])
+  const posts = latest.docs
+  const featured = selected?.docs[0] || posts[0]
   const legacy = props.heroTitle === 'Learn Affiliate Marketing. Build Your Freedom.'
   const title = legacy ? 'Good finds.\nBetter everyday living.' : props.heroTitle
   const description = legacy

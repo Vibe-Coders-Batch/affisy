@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import configPromise from '@payload-config'
-import { getPayload, type Where } from 'payload'
+import { Suspense } from 'react'
+import { getPublicPosts } from '@/utilities/getPublicPosts'
+import { PostGridSkeleton } from '@/components/Editorial/Loading'
 import { PostCard } from '@/components/Editorial/PostCard'
 import { siteURL } from '@/utilities/site'
 
@@ -18,33 +19,6 @@ export default async function Page({ searchParams }: Args) {
   const { category = '', page = '1' } = await searchParams
   if (!/^\d+$/.test(page) || !Number.isSafeInteger(Number(page)) || Number(page) < 1) notFound()
   const currentPage = Number(page)
-  const payload = await getPayload({ config: configPromise })
-  const where: Where = { _status: { equals: 'published' } }
-  if (category) {
-    const categories = await payload.find({
-      collection: 'categories',
-      where: { slug: { equals: category } },
-      depth: 0,
-      overrideAccess: false,
-      limit: 1,
-    })
-    where.categories = { in: categories.docs.map((c) => c.id) }
-  }
-  const posts = await payload.find({
-    collection: 'posts',
-    depth: 1,
-    limit: 12,
-    page: currentPage,
-    overrideAccess: false,
-    sort: '-publishedAt',
-    where,
-  })
-  if (currentPage > Math.max(1, posts.totalPages)) notFound()
-  const pageHref = (n: number) =>
-    `/posts?${new URLSearchParams({ ...(category ? { category } : {}), ...(n > 1 ? { page: String(n) } : {}) })}`.replace(
-      /\?$/,
-      '',
-    )
   return (
     <div className="container py-12 sm:py-16">
       <p className="eyebrow">The ShoppeCove journal</p>
@@ -71,6 +45,23 @@ export default async function Page({ searchParams }: Args) {
           </Link>
         ))}
       </nav>
+      <Suspense key={`${category}:${currentPage}`} fallback={<PostGridSkeleton />}>
+        <PostResults category={category} currentPage={currentPage} />
+      </Suspense>
+    </div>
+  )
+}
+
+async function PostResults({ category, currentPage }: { category: string; currentPage: number }) {
+  const posts = await getPublicPosts(category, currentPage)
+  if (currentPage > Math.max(1, posts.totalPages)) notFound()
+  const pageHref = (n: number) =>
+    `/posts?${new URLSearchParams({ ...(category ? { category } : {}), ...(n > 1 ? { page: String(n) } : {}) })}`.replace(
+      /\?$/,
+      '',
+    )
+  return (
+    <>
       {posts.docs.length ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.docs.map((post) => (
@@ -98,7 +89,7 @@ export default async function Page({ searchParams }: Args) {
           {posts.hasNextPage && <Link href={pageHref(currentPage + 1)}>Next →</Link>}
         </nav>
       )}
-    </div>
+    </>
   )
 }
 

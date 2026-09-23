@@ -1,25 +1,35 @@
 'use client'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import React, { useState, useEffect } from 'react'
-import { useDebounce } from '@/utilities/useDebounce'
+import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 
-export const Search: React.FC = () => {
-  const [value, setValue] = useState('')
+export const Search: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
+  const [value, setValue] = useState(initialQuery)
+  const [sourceQuery, setSourceQuery] = useState(initialQuery)
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const router = useRouter()
-
-  const debouncedValue = useDebounce(value)
-
+  // Reset on a changed URL without remounting the input and losing keyboard focus.
+  if (sourceQuery !== initialQuery) {
+    setSourceQuery(initialQuery)
+    setValue(initialQuery)
+  }
+  // Opening /search?q=... must not erase the query and cause a second navigation.
   useEffect(() => {
-    router.push(`/search${debouncedValue ? `?q=${debouncedValue}` : ''}`)
-  }, [debouncedValue, router])
+    clearTimeout(timer.current)
+    return () => clearTimeout(timer.current)
+  }, [initialQuery])
+
+  const searchURL = (query: string) =>
+    query.trim() ? `/search?${new URLSearchParams({ q: query.trim() })}` : '/search'
 
   return (
     <div>
       <form
         onSubmit={(e) => {
           e.preventDefault()
+          clearTimeout(timer.current)
+          if (value.trim() !== initialQuery) router.replace(searchURL(value), { scroll: false })
         }}
       >
         <Label htmlFor="search" className="sr-only">
@@ -27,8 +37,15 @@ export const Search: React.FC = () => {
         </Label>
         <Input
           id="search"
+          type="search"
+          value={value}
           onChange={(event) => {
-            setValue(event.target.value)
+            const next = event.target.value
+            setValue(next)
+            clearTimeout(timer.current)
+            timer.current = setTimeout(() => {
+              if (next.trim() !== initialQuery) router.replace(searchURL(next), { scroll: false })
+            }, 300)
           }}
           placeholder="Search"
         />

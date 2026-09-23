@@ -3,6 +3,7 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Post } from '../../../payload-types'
+import { invalidatePostCards } from '@/hooks/revalidatePostCards'
 
 export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   doc,
@@ -10,8 +11,7 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    revalidatePath('/')
-    revalidatePath('/posts')
+    invalidatePostCards()
     if (doc._status === 'published') {
       const path = `/posts/${doc.slug}`
 
@@ -39,8 +39,7 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
 export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    revalidatePath('/')
-    revalidatePath('/posts')
+    invalidatePostCards()
     const path = `/posts/${doc?.slug}`
 
     revalidatePath(path)
