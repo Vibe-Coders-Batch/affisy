@@ -3,11 +3,12 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
+import { HeaderClient } from '@/Header/Component.client'
 import { Providers } from '@/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
@@ -37,9 +38,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <Header />
+          <Suspense fallback={<HeaderClient data={{ id: 'loading', navItems: [] }} />}>
+            <Header />
+          </Suspense>
           <main id="main-content">{children}</main>
-          <Footer />
+          <Suspense fallback={<div aria-hidden="true" className="mt-auto min-h-60 bg-[#f0f0e8]" />}>
+            <Footer />
+          </Suspense>
         </Providers>
       </body>
     </html>

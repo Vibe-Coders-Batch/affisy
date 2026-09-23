@@ -14,6 +14,7 @@ Search had a separate bug: its input always started empty, and a mount effect na
 - Fetch only card fields, enforce public access and published status, and use a five-minute revalidation interval. Draft article preview queries are not cached here.
 - Expire the public-card cache immediately when posts change or are deleted, and when populated media/categories change. Refresh home, journal and search paths.
 - Add a route loading state and keyed Suspense boundaries for journal and search results, so the page responds while data loads. The placeholders respect reduced-motion preferences.
+- Give the CMS-backed header and footer their own Suspense boundaries. A page-level loading boundary cannot cover its parent layout; without these boundaries a cold global-navigation read still held up the whole response. The header fallback keeps the built-in journal/category links usable.
 - Load homepage latest and featured lists concurrently.
 - Defer importing Payload and its configuration until a cache miss. Cached journal and global-navigation reads no longer eagerly initialize the CMS module graph before a loading response can stream.
 - Initialize search from its incoming query, navigate only after editing/submission, encode query parameters, and use replace rather than filling browser history on each keystroke. Back/forward updates cancel pending searches without remounting the input.
