@@ -4,10 +4,23 @@ import type { Post } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { articleDetails } from '@/utilities/article'
+import { hasAffiliateLink } from '@/components/Editorial/OfferCTA'
 
 export const PostHero = ({ post }: { post: Post }) => {
   const author = formatAuthors(post.populatedAuthors || []) || 'ShoppeCove editorial'
   const date = post.publishedAt
+  const affiliateURL = hasAffiliateLink(post.review) ? post.review?.affiliateURL : undefined
+  const hero = post.heroImage && typeof post.heroImage === 'object' && (
+    <div className="relative aspect-[16/7] overflow-hidden bg-[#e9eadd]">
+      <Media
+        fill
+        priority
+        imgClassName="object-cover"
+        resource={post.heroImage}
+        size="(max-width: 1024px) 100vw, 1024px"
+      />
+    </div>
+  )
   return (
     <header className="container">
       <nav aria-label="Breadcrumb" className="mb-10 flex flex-wrap gap-2 text-xs text-[#626b60]">
@@ -54,19 +67,31 @@ export const PostHero = ({ post }: { post: Post }) => {
           </span>
         </div>
       </div>
-      {post.heroImage && typeof post.heroImage === 'object' && (
+      {hero && (
         <figure className="mx-auto mt-10 max-w-5xl">
-          <div className="relative aspect-[16/7] overflow-hidden bg-[#e9eadd]">
-            <Media
-              fill
-              priority
-              imgClassName="object-cover"
-              resource={post.heroImage}
-              size="(max-width: 1024px) 100vw, 1024px"
-            />
-          </div>
-          {post.imageCaption && (
-            <figcaption className="mt-2 text-xs text-[#626b60]">{post.imageCaption}</figcaption>
+          {affiliateURL ? (
+            <a
+              href={affiliateURL}
+              rel="sponsored nofollow noreferrer"
+              data-affiliate-placement="hero"
+              aria-label={`${post.review?.linkLabel || 'View product details'} (seller website)`}
+              className="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#233d32]"
+            >
+              {hero}
+            </a>
+          ) : (
+            hero
+          )}
+          {(post.imageCaption || affiliateURL) && (
+            <figcaption className="mt-2 space-y-1 text-xs leading-5 text-[#626b60]">
+              {post.imageCaption && <p>{post.imageCaption}</p>}
+              {affiliateURL && (
+                <p>
+                  Image opens the seller’s website. Affiliate link: we may earn a commission if you
+                  buy, at no extra cost to you.
+                </p>
+              )}
+            </figcaption>
           )}
         </figure>
       )}

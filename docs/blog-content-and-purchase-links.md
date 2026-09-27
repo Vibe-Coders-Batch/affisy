@@ -6,6 +6,8 @@ Product reviews now offer a seller link in the quick verdict, between complete a
 
 September 28 update: articles with a valid HTTPS affiliate link also show a sticky purchase card on the right at desktop widths of 1024px and above. It uses the article's existing image, product-link heading and explanation, plus a “Check price & buy” button. Generated illustrations retain a visible illustration label. The card stays 112px below the top edge while reading, stops at the article's lower boundary, and supports keyboard scrolling in short windows.
 
+The article hero image also opens the same tracked seller URL in the current tab. It has a keyboard focus indicator, an accessible seller-link label, and a visible affiliate notice below the image. Original image captions are retained. Without a valid affiliate URL, the hero remains a plain image.
+
 The contents list is collapsed above the text on mobile and smaller laptops. At 1280px and above, articles with purchase cards have contents on the left, text in the middle and the purchase card on the right. Mobile keeps the three existing inline placements without a floating overlay. Articles without a valid affiliate link keep their prior layout. Heading links still work when the article is split around the middle button, including repeated headings.
 
 ## Content prepared
@@ -55,7 +57,7 @@ This local script disables Next.js revalidation because it runs outside the web 
 
 ## Measure before adding more buttons
 
-The links expose `data-affiliate-placement="summary|article|verdict|sidebar"` for a future analytics integration. This change does **not** install analytics or record clicks. Affiliate tracking parameters have not been rewritten.
+The links expose `data-affiliate-placement="summary|article|verdict|sidebar|hero"` for a future analytics integration. This change does **not** install analytics or record clicks. Affiliate tracking parameters have not been rewritten.
 
 When analytics is connected, compare article visits and outbound clicks by placement. Use ClickBank reporting to examine attributed sales and refunds separately; an outbound click is not a sale. With low traffic, collect a useful baseline before drawing conclusions from small changes.
 
