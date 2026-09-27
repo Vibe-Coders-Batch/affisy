@@ -13,6 +13,8 @@ All four selected articles were published on September 26, 2026 after the owner 
 
 Public checks confirmed HTTP 200, canonical URLs, indexable metadata, three correctly attributed HopLink buttons per article with sponsored/nofollow attributes, affiliate disclosures, and inclusion in the homepage, archive and posts sitemap. This verifies publication and link configuration, not Google indexing, sales or commission payments. Research for the two additional selections is in [the expanded report](clickbank-expanded-research-2026-09-26.md).
 
+September 28 update: four original AI editorial cover illustrations were added to the live article heroes, listing cards and social previews. Asset paths, prompts, verification and the CMS update workflow are recorded in [the image notes](researched-article-images.md). The images depict generic scenes rather than paid course contents or tested products.
+
 ## Selected NEW offers, in order of priority
 
 | Priority | Offer / vendor | Why selected | Live marketplace EPC | Avg. commission per conversion | CVR | Gravity | Marketplace rank |
