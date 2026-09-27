@@ -4,7 +4,9 @@
 
 Product reviews now offer a seller link in the quick verdict, between complete article sections, and after the closing pros and cons. Buttons stay in the reading flow, use a full-width layout on small screens, and include a commission disclosure. Affiliate URLs are preserved exactly.
 
-The mobile contents list is collapsed until the reader opens it. Desktop keeps the existing sidebar. Heading links still work when the article is split around the middle button, including repeated headings.
+September 28 update: articles with a valid HTTPS affiliate link also show a sticky purchase card on the right at desktop widths of 1024px and above. It uses the article's existing image, product-link heading and explanation, plus a “Check price & buy” button. Generated illustrations retain a visible illustration label. The card stays 112px below the top edge while reading, stops at the article's lower boundary, and supports keyboard scrolling in short windows.
+
+The contents list is collapsed above the text on mobile and smaller laptops. At 1280px and above, articles with purchase cards have contents on the left, text in the middle and the purchase card on the right. Mobile keeps the three existing inline placements without a floating overlay. Articles without a valid affiliate link keep their prior layout. Heading links still work when the article is split around the middle button, including repeated headings.
 
 ## Content prepared
 
@@ -23,8 +25,8 @@ In a post’s **Product guide & affiliate link** group:
 
 - **At a glance** supplies the quick verdict.
 - **Worth considering if** and **Consider another option if** explain reader fit.
-- **Tracked affiliate URL** and **Link label** control all three links.
-- **Product link heading** and **Product link explanation** supply the middle and closing cards.
+- **Tracked affiliate URL** supplies every purchase placement. **Link label** controls the three inline links; the compact desktop card uses “Check price & buy”.
+- **Product link heading** and **Product link explanation** supply the middle, closing and desktop sidebar cards.
 - **Place the in-article product link after this section** takes the exact H2 heading. The link appears after the whole section, before the next H2. A missing or final heading suppresses the middle card. Blank uses the middle boundary for articles with at least four H2s; shorter articles keep the summary and closing links.
 
 Articles without a valid HTTPS affiliate URL do not show seller buttons. Articles without a summary do not show the quick-verdict card.
@@ -53,13 +55,15 @@ This local script disables Next.js revalidation because it runs outside the web 
 
 ## Measure before adding more buttons
 
-The links expose `data-affiliate-placement="summary|article|verdict"` for a future analytics integration. This change does **not** install analytics or record clicks. Affiliate tracking parameters have not been rewritten.
+The links expose `data-affiliate-placement="summary|article|verdict|sidebar"` for a future analytics integration. This change does **not** install analytics or record clicks. Affiliate tracking parameters have not been rewritten.
 
 When analytics is connected, compare article visits and outbound clicks by placement. Use ClickBank reporting to examine attributed sales and refunds separately; an outbound click is not a sale. With low traffic, collect a useful baseline before drawing conclusions from small changes.
 
 For the next content batch, stay close to these topics: choosing a kitchen knife online and deciding between a digital cookbook and free recipes. Use Search Console queries, when available, to prioritize updates. These are editorial topic ideas, not researched traffic forecasts.
 
 ## Validation
+
+The September 28 sidebar update passed TypeScript, scoped ESLint and the five article-offer tests, extended to include sidebar tracking/disclosure and invalid-link suppression. Browser checks covered 1280px and 1024px desktop widths, a 500px-tall window, and 390px mobile. Measured scroll checks kept the card at 112px while the page moved; keyboard scrolling kept the button reachable in the short window; the card stopped above the footer; mobile had no sidebar overlay or horizontal overflow.
 
 - TypeScript and the production build passed.
 - Ten focused tests cover SEO, affiliate URL preservation, disclosures, insertion boundaries, repeated heading anchors, absent/invalid links and repeatable content updates.

@@ -3,6 +3,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { ArticleBody } from '@/components/Editorial/ArticleBody'
 import { OfferCTA, ReviewSummary } from '@/components/Editorial/OfferCTA'
+import { OfferSidebar } from '@/components/Editorial/OfferSidebar'
 import { articleDetails, articleOfferSplit } from '@/utilities/article'
 import { improveReview, supportingGuides, supportingPost } from '@/content/blog-improvements'
 import { shoppecoveGuides } from '@/content/shoppecove-guides'
@@ -21,11 +22,12 @@ const original = {
 const post = { ...original, ...improveReview(original) }
 
 describe('Article purchase paths', () => {
-  it('renders three disclosed seller links and preserves the affiliate URL', () => {
+  it('preserves the tracked URL and disclosure in every purchase placement', () => {
     const html = [
       createElement(ReviewSummary, { review: post.review }),
       createElement(ArticleBody, { content: post.content, review: post.review }),
       createElement(OfferCTA, { review: post.review, placement: 'verdict' }),
+      createElement(OfferSidebar, { post }),
     ]
       .map((element) => renderToStaticMarkup(element))
       .join('')
@@ -36,6 +38,7 @@ describe('Article purchase paths', () => {
       'summary',
       'article',
       'verdict',
+      'sidebar',
     ])
     for (const link of links) {
       expect(link.getAttribute('href')).toBe(original.review?.affiliateURL)
@@ -78,6 +81,9 @@ describe('Article purchase paths', () => {
     for (const affiliateURL of [undefined, '', 'javascript:alert(1)', 'http://example.com']) {
       const review = { ...post.review, affiliateURL }
       expect(renderToStaticMarkup(createElement(OfferCTA, { review, placement: 'verdict' }))).toBe(
+        '',
+      )
+      expect(renderToStaticMarkup(createElement(OfferSidebar, { post: { ...post, review } }))).toBe(
         '',
       )
       expect(

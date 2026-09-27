@@ -14,10 +14,11 @@ export function OfferCTA({
   placement,
 }: {
   review: Post['review']
-  placement: 'summary' | 'article' | 'verdict'
+  placement: 'summary' | 'article' | 'verdict' | 'sidebar'
 }) {
   if (!hasAffiliateLink(review)) return null
-  const compact = placement === 'summary'
+  const sidebar = placement === 'sidebar'
+  const compact = placement === 'summary' || sidebar
   const dark = placement === 'verdict'
   return (
     <div
@@ -45,9 +46,9 @@ export function OfferCTA({
         rel="sponsored nofollow noopener noreferrer"
         target="_blank"
         data-affiliate-placement={placement}
-        className={`inline-flex min-h-12 w-full items-center justify-center gap-3 px-5 py-3 text-center text-sm font-medium sm:w-auto ${compact ? '' : 'mt-5'} ${dark ? 'bg-[#faf9f5] text-[#233d32] hover:bg-[#e5eadb]' : 'bg-[#233d32] text-[#faf9f5] hover:bg-[#3c5744]'}`}
+        className={`inline-flex min-h-12 w-full items-center justify-center gap-3 px-5 py-3 text-center text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-4 ${sidebar ? '' : 'sm:w-auto'} ${compact ? '' : 'mt-5'} ${dark ? 'bg-[#faf9f5] text-[#233d32] hover:bg-[#e5eadb] focus-visible:outline-[#faf9f5]' : 'bg-[#233d32] text-[#faf9f5] hover:bg-[#3c5744] focus-visible:outline-[#233d32]'}`}
       >
-        {review?.linkLabel || 'Check price & availability'}
+        {sidebar ? 'Check price & buy' : review?.linkLabel || 'Check price & availability'}
         <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
         <span className="sr-only"> (seller website, opens in a new tab)</span>
       </a>

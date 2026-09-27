@@ -7,7 +7,8 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { ArticleBody } from '@/components/Editorial/ArticleBody'
-import { OfferCTA, ReviewSummary } from '@/components/Editorial/OfferCTA'
+import { hasAffiliateLink, OfferCTA, ReviewSummary } from '@/components/Editorial/OfferCTA'
+import { OfferSidebar } from '@/components/Editorial/OfferSidebar'
 
 import type { Post } from '@/payload-types'
 import Link from 'next/link'
@@ -60,6 +61,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   const imageURL = image && typeof image === 'object' ? mediaURL(image.url) : undefined
   const canonical = siteURL(url)
   const review = post.review
+  const showOfferSidebar = hasAffiliateLink(review)
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -102,11 +104,21 @@ export default async function Post({ params: paramsPromise }: Args) {
         />
       )}
       <PostHero post={post} />
-      <div className="container mt-12 grid items-start gap-10 lg:grid-cols-[220px_minmax(0,740px)] lg:justify-center lg:gap-14">
-        <aside className="lg:sticky lg:top-28">
+      <div
+        className={`container mt-12 grid items-start gap-10 lg:justify-center ${showOfferSidebar ? 'lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-8 xl:grid-cols-[180px_minmax(0,1fr)_280px]' : 'lg:grid-cols-[220px_minmax(0,740px)] lg:gap-14'}`}
+      >
+        <aside
+          className={
+            showOfferSidebar
+              ? 'lg:col-start-1 lg:row-start-1 xl:sticky xl:top-28'
+              : 'lg:sticky lg:top-28'
+          }
+        >
           {!!headings.length && (
             <>
-              <details className="border-y border-[#deded3] py-4 lg:hidden">
+              <details
+                className={`border-y border-[#deded3] py-4 ${showOfferSidebar ? 'xl:hidden' : 'lg:hidden'}`}
+              >
                 <summary className="cursor-pointer text-sm font-medium">Jump to a section</summary>
                 <nav aria-label="In this article" className="mt-4">
                   <ol className="space-y-3">
@@ -122,7 +134,7 @@ export default async function Post({ params: paramsPromise }: Args) {
               </details>
               <nav
                 aria-label="In this article"
-                className="hidden border-y border-[#deded3] py-5 lg:block"
+                className={`hidden border-y border-[#deded3] py-5 ${showOfferSidebar ? 'xl:block' : 'lg:block'}`}
               >
                 <h2 className="eyebrow mb-4">In this article</h2>
                 <ol className="space-y-3">
@@ -147,7 +159,9 @@ export default async function Post({ params: paramsPromise }: Args) {
             </Link>
           </p>
         </aside>
-        <div className="min-w-0">
+        <div
+          className={`min-w-0 ${showOfferSidebar ? 'lg:col-start-1 lg:row-start-2 xl:col-start-2 xl:row-start-1' : ''}`}
+        >
           {review?.basis && (
             <div className="mb-8 border-l-2 border-[#9aa883] pl-5 text-sm leading-7 text-[#626b60]">
               <strong className="text-[#233d32]">About this article. </strong>
@@ -202,6 +216,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             />
           )}
         </div>
+        <OfferSidebar post={post} />
       </div>
     </article>
   )
