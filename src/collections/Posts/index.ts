@@ -151,6 +151,32 @@ export const Posts: CollectionConfig<'posts'> = {
             }),
 
             MetaDescriptionField({}),
+            {
+              name: 'useExactTitle',
+              type: 'checkbox',
+              label: 'Use SEO title exactly as entered',
+            },
+            {
+              name: 'focusKeyphrase',
+              type: 'text',
+              label: 'Primary focus keyphrase',
+            },
+            {
+              name: 'secondaryKeywords',
+              type: 'array',
+              label: 'Secondary keywords',
+              fields: [{ name: 'keyword', type: 'text', required: true }],
+            },
+            {
+              name: 'openGraphTitle',
+              type: 'text',
+              label: 'Open Graph title',
+            },
+            {
+              name: 'openGraphDescription',
+              type: 'textarea',
+              label: 'Open Graph description',
+            },
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

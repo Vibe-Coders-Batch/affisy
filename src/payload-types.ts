@@ -252,6 +252,16 @@ export interface Post {
      */
     image?: (string | null) | Media;
     description?: string | null;
+    useExactTitle?: boolean | null;
+    focusKeyphrase?: string | null;
+    secondaryKeywords?:
+      | {
+          keyword: string;
+          id?: string | null;
+        }[]
+      | null;
+    openGraphTitle?: string | null;
+    openGraphDescription?: string | null;
   };
   /**
    * Image credit or illustration disclosure, shown below the hero image.
@@ -1367,6 +1377,16 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        useExactTitle?: T;
+        focusKeyphrase?: T;
+        secondaryKeywords?:
+          | T
+          | {
+              keyword?: T;
+              id?: T;
+            };
+        openGraphTitle?: T;
+        openGraphDescription?: T;
       };
   imageCaption?: T;
   review?:

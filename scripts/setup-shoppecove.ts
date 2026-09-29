@@ -45,9 +45,13 @@ try {
     categories[slug] = category.id
   }
   for (const { topic, ...guide } of shoppecoveGuides) {
+    const knownSlugs =
+      guide.slug === 'matsato-osuren-review'
+        ? [guide.slug, 'matsato-osuren-knife-review']
+        : [guide.slug]
     const existing = await payload.find({
       collection: 'posts',
-      where: { slug: { equals: guide.slug } },
+      where: { slug: { in: knownSlugs } },
       limit: 1,
       depth: 0,
       draft: true,

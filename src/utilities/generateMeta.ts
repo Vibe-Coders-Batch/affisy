@@ -12,28 +12,38 @@ export const generateMeta = async ({
   if (!doc) return { title: 'Page not found | ShoppeCove', robots: { index: false, follow: false } }
   const path =
     doc.slug === 'home' ? '/' : `/${collection === 'posts' ? 'posts/' : ''}${doc.slug || ''}`
+  const post = collection === 'posts' ? (doc as Partial<Post>) : undefined
   const rawTitle = doc.meta?.title || doc.title || site.name
   const cleanTitle = rawTitle.replace(/\s*\|\s*(Payload Website Template|ShoppeCove)$/i, '')
-  const title = `${cleanTitle} | ${site.name}`
+  const title = post?.meta?.useExactTitle ? cleanTitle : `${cleanTitle} | ${site.name}`
   const description = doc.meta?.description || site.description
+  const keywords = [
+    post?.meta?.focusKeyphrase,
+    ...(post?.meta?.secondaryKeywords?.map((item) => item.keyword) || []),
+  ].filter((keyword): keyword is string => Boolean(keyword))
   const image = doc.meta?.image || ('heroImage' in doc ? doc.heroImage : null)
   const imageURL =
     image && typeof image === 'object'
       ? mediaURL(image.sizes?.og?.url || image.url)
       : siteURL('/images/kitchen-editorial.webp')
-  const post = collection === 'posts' ? (doc as Partial<Post>) : undefined
   return {
     title,
     description,
+    ...(keywords.length ? { keywords } : {}),
     alternates: { canonical: siteURL(path) },
     openGraph: {
-      title,
-      description,
+      title: post?.meta?.openGraphTitle || title,
+      description: post?.meta?.openGraphDescription || description,
       url: siteURL(path),
       siteName: site.name,
       locale: 'en_US',
       type: post ? 'article' : 'website',
-      images: imageURL ? [{ url: imageURL }] : [],
+      images:
+        imageURL && image && typeof image === 'object'
+          ? [{ url: imageURL, alt: image.alt || undefined }]
+          : imageURL
+            ? [{ url: imageURL }]
+            : [],
       ...(post
         ? {
             publishedTime: post.publishedAt || undefined,
