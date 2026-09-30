@@ -11,7 +11,7 @@ const oldSlug = 'matsato-osuren-review'
 const slug = 'matsato-osuren-knife-review'
 const seoTitle = 'Matsato Osuren Knife Review (2026): Features, Price & Pros and Cons'
 const description =
-  'Read our Matsato Osuren knife review covering listed features, 16 cm specifications, package prices, and the seller’s 60-day return policy. Check details before ordering.'
+  'Matsato Osuren knife review: see its 16 cm specifications, features, package prices, pros and cons, and seller’s 60-day return policy before ordering.'
 const openGraphTitle = 'Matsato Osuren Knife Review: Features, Price and Return Policy'
 const openGraphDescription =
   'Explore the Matsato Osuren knife’s listed specifications, design features, package prices, and seller-published return policy before purchasing.'
