@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import type { Page, Post } from '@/payload-types'
 import { mediaURL, site, siteURL } from './site'
+import { journalHome } from '@/content/journal-home'
 
 export const generateMeta = async ({
   doc,
@@ -13,10 +14,15 @@ export const generateMeta = async ({
   const path =
     doc.slug === 'home' ? '/' : `/${collection === 'posts' ? 'posts/' : ''}${doc.slug || ''}`
   const post = collection === 'posts' ? (doc as Partial<Post>) : undefined
-  const rawTitle = doc.meta?.title || doc.title || site.name
+  const starterHome =
+    doc.slug === 'home' &&
+    doc.meta?.title === 'Buying guides for a more thoughtful everyday | ShoppeCove'
+  const rawTitle = starterHome ? journalHome.metaTitle : doc.meta?.title || doc.title || site.name
   const cleanTitle = rawTitle.replace(/\s*\|\s*(Payload Website Template|ShoppeCove)$/i, '')
   const title = post?.meta?.useExactTitle ? cleanTitle : `${cleanTitle} | ${site.name}`
-  const description = doc.meta?.description || site.description
+  const description = starterHome
+    ? journalHome.metaDescription
+    : doc.meta?.description || site.description
   const keywords = [
     post?.meta?.focusKeyphrase,
     ...(post?.meta?.secondaryKeywords?.map((item) => item.keyword) || []),
@@ -25,7 +31,7 @@ export const generateMeta = async ({
   const imageURL =
     image && typeof image === 'object'
       ? mediaURL(image.sizes?.og?.url || image.url)
-      : siteURL('/images/kitchen-editorial.webp')
+      : siteURL('/images/journal-social.png')
   return {
     title,
     description,

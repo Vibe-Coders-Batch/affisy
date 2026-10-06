@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#faf9f5"/>
+  <rect x="0" y="0" width="1200" height="12" fill="#233d32"/>
+  <g fill="#233d32">
+    <text x="72" y="104" font-family="Georgia, serif" font-size="36">ShoppeCove</text>
+    <text x="291" y="101" font-family="Arial, sans-serif" font-size="20" fill="#8c9d8d">/</text>
+    <text x="320" y="101" font-family="Arial, sans-serif" font-size="19">The journal</text>
+    <text x="72" y="263" font-family="Georgia, serif" font-size="58" letter-spacing="-1.5">Follow your curiosity.</text>
+    <text x="72" y="340" font-family="Georgia, serif" font-size="58" letter-spacing="-1.5">Choose with care.</text>
+  </g>
+  <path d="M72 396H210" stroke="#9dab9b" stroke-width="3"/>
+  <path d="M780 178V515" stroke="#d4dcd2" stroke-width="1.5"/>
+  <text x="824" y="182" font-family="Arial, sans-serif" font-size="12" letter-spacing="2.2" fill="#657c6d">EXPLORE YOUR INTERESTS</text>
+  <g font-family="Arial, sans-serif" font-size="21" fill="#233d32">
+    <text x="824" y="234">Kitchen &amp; food</text>
+    <text x="824" y="274">Home &amp; garden</text>
+    <text x="824" y="314">DIY &amp; projects</text>
+    <text x="824" y="354">Learning &amp; hobbies</text>
+    <text x="824" y="394">Digital tools</text>
+    <text x="824" y="434">Pets</text>
+    <text x="824" y="474">Health &amp; wellness</text>
+    <text x="824" y="514">Personal growth</text>
+  </g>
+  <path d="M72 564H1128" stroke="#9dab9b" stroke-width="1.5"/>
+</svg>

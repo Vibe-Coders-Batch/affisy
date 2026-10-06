@@ -3,104 +3,217 @@ import {
   ArrowUpRight,
   BookOpen,
   CookingPot,
+  Heart,
   Leaf,
+  Lightbulb,
+  Monitor,
+  PawPrint,
   Search,
   ShieldCheck,
-  BedDouble,
+  Sprout,
+  Wrench,
 } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { getPublicPosts } from '@/utilities/getPublicPosts'
+import { getPublicJournal, type PublicJournalPost } from '@/utilities/getPublicJournal'
+import { getPostTopics, selectTopicPosts } from '@/utilities/journalTopics'
+import { isStarterHomeImage, isStarterHomeTitle, journalHome } from '@/content/journal-home'
 import { Media } from '@/components/Media'
 import { PostCard } from '@/components/Editorial/PostCard'
 import type { AffiliateHomeBlock as Props } from '@/payload-types'
 
+const topicIcons = {
+  'food-kitchen': CookingPot,
+  'home-garden': Sprout,
+  'diy-projects': Wrench,
+  'learning-hobbies': BookOpen,
+  'digital-tools': Monitor,
+  pets: PawPrint,
+  'health-wellness': Heart,
+  'personal-growth': Lightbulb,
+}
+
+function postImage(post: PublicJournalPost) {
+  const image = post.heroImage || post.meta?.image
+  return image && typeof image === 'object' ? image : undefined
+}
+
 export async function AffiliateHomeBlock(props: Props) {
   const featuredID =
     typeof props.featuredPost === 'object' ? props.featuredPost?.id : props.featuredPost
-  const [latest, selected] = await Promise.all([
-    getPublicPosts('', 1, props.latestLimit || 6),
+  const [journal, selected] = await Promise.all([
+    getPublicJournal(),
     featuredID ? getPublicPosts('', 1, 1, '', featuredID) : Promise.resolve(null),
   ])
-  const posts = latest.docs
-  const featured = selected?.docs[0] || posts[0]
-  const legacy = props.heroTitle === 'Learn Affiliate Marketing. Build Your Freedom.'
-  const title = legacy ? 'Good finds.\nBetter everyday living.' : props.heroTitle
-  const description = legacy
-    ? 'Thoughtful buying guides and a closer look at the things you bring home. Find what fits your life, before you buy.'
-    : props.heroDescription
+  const featured = selected?.docs[0] || journal.posts[0]
+  const starter = isStarterHomeTitle(props.heroTitle)
+  const title = starter ? journalHome.heroTitle : props.heroTitle
+  const description = starter ? journalHome.heroDescription : props.heroDescription
+  const customHero =
+    props.heroImage &&
+    typeof props.heroImage === 'object' &&
+    !(starter && isStarterHomeImage(props.heroImage.filename))
+      ? props.heroImage
+      : undefined
+  const morePosts = selectTopicPosts(
+    journal.posts,
+    props.latestLimit || 6,
+    featured ? [featured.id] : [],
+  )
+  const heroStories: PublicJournalPost[] = []
+  for (const [slug, illustratedPost] of [
+    ['home-garden', '4-foot-farm-blueprint-guide'],
+    ['learning-hobbies', 'pianoforall-adult-beginners-guide'],
+    ['diy-projects', 'small-woodworking-shop-setup'],
+    ['pets', 'brain-training-for-dogs-review'],
+  ]) {
+    const candidates = journal.posts.filter((post) =>
+      getPostTopics(post).some((topic) => topic.slug === slug),
+    )
+    const post =
+      candidates.find((post) => post.slug === illustratedPost && postImage(post)) ||
+      candidates.find((post) => postImage(post)) ||
+      candidates[0]
+    if (post && !heroStories.some(({ id }) => id === post.id)) heroStories.push(post)
+  }
+  heroStories.push(
+    ...selectTopicPosts(
+      journal.posts,
+      4 - heroStories.length,
+      heroStories.map(({ id }) => id),
+    ),
+  )
+
   return (
     <div className="shoppecove-home">
       <div className="container">
         <div className="flex flex-wrap justify-between gap-2 border-b border-[#deded3] py-4 text-[10px] uppercase tracking-[0.16em] text-[#626b60]">
           <span>The ShoppeCove journal</span>
-          <span>Considered choices. Everyday discoveries.</span>
+          <span>Many interests. Considered choices.</span>
         </div>
-        <section className="grid items-center gap-10 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-16">
+        <section className="grid items-center gap-10 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 lg:py-16">
           <div>
             <p className="eyebrow flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-[#b7704f]" /> A more thoughtful way to shop
+              <span className="size-1.5 rounded-full bg-[#b7704f]" /> Everyday ideas. A closer look.
             </p>
             <h1 className="font-editorial mt-6 whitespace-pre-line text-5xl leading-[1.06] tracking-[-0.045em] sm:text-6xl lg:text-[72px]">
               {title}
             </h1>
             <p className="mt-6 max-w-md text-base leading-8 text-[#626b60]">{description}</p>
-            <Link href={legacy ? '/posts' : props.heroCTA.url} className="cove-button mt-7">
-              {legacy ? 'Explore the journal' : props.heroCTA.label}
-              <ArrowUpRight className="size-4" />
-            </Link>
-            <p className="mt-7 text-xs text-[#626b60]">
-              Home & kitchen <span className="px-2">/</span> Sleep & comfort{' '}
-              <span className="px-2">/</span> Everyday know-how
-            </p>
-          </div>
-          <figure className="relative">
-            <div className="relative aspect-[1.18] overflow-hidden rounded-t-[45%] rounded-b-sm bg-[#e9eadd]">
-              {!legacy && props.heroImage && typeof props.heroImage === 'object' ? (
-                <Media fill priority resource={props.heroImage} imgClassName="object-cover" />
-              ) : (
-                <Image
-                  src="/images/kitchen-editorial.webp"
-                  alt="An illustrative kitchen scene with a chef’s knife, tomatoes, and an oak cutting board"
-                  fill
-                  preload
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  className="object-cover"
-                />
+            <div className="mt-7 flex flex-wrap items-center gap-6">
+              <Link href={starter ? '/posts' : props.heroCTA.url} className="cove-button">
+                {starter ? 'Explore the journal' : props.heroCTA.label}
+                <ArrowUpRight className="size-4" />
+              </Link>
+              {journal.topics.length > 0 && (
+                <Link href="#topics" className="inline-flex items-center gap-2 text-sm">
+                  Find your topic <ArrowRight className="size-4" />
+                </Link>
               )}
             </div>
-            <div className="absolute bottom-10 -left-3 max-w-[250px] bg-[#faf9f5] p-5 shadow-sm sm:-left-6">
-              <p className="eyebrow">Start with the essentials</p>
-              <p className="font-editorial mt-2 text-2xl leading-tight">
-                Small details.
-                <br />
-                Better decisions.
+            {journal.posts.length > 0 && (
+              <p className="mt-8 text-xs text-[#626b60]">
+                {journal.posts.length} articles{' '}
+                <span className="px-3" aria-hidden="true">
+                  /
+                </span>
+                {journal.topics.length} topics{' '}
+                <span className="px-3" aria-hidden="true">
+                  /
+                </span>{' '}
+                Plenty to discover
               </p>
-              <Link
-                href="/posts?category=kitchen"
-                className="mt-3 inline-flex items-center gap-3 text-xs font-medium"
-              >
-                Explore kitchen guides <ArrowRight className="size-4" />
-              </Link>
-            </div>
-            {(legacy || !props.heroImage) && (
-              <figcaption className="mt-2 text-right text-[10px] text-[#73796e]">
-                AI-generated editorial illustration
-              </figcaption>
             )}
-          </figure>
+          </div>
+          {customHero ? (
+            <div className="relative aspect-[1.18] overflow-hidden rounded-t-[45%] rounded-b-sm bg-[#e9eadd]">
+              <Media
+                fill
+                priority
+                resource={customHero}
+                imgClassName="object-cover"
+                size="(max-width: 1024px) 100vw, 55vw"
+              />
+            </div>
+          ) : heroStories.length > 0 ? (
+            <div
+              aria-label="Discover stories across the journal"
+              className="bg-[#eeefe5] p-4 sm:p-6"
+            >
+              <p className="eyebrow mb-4">A place for your next interest</p>
+              <div className="grid grid-cols-2 gap-4">
+                {heroStories.map((post, index) => {
+                  const topic = getPostTopics(post)[0]
+                  const image = postImage(post)
+                  const Icon = topicIcons[topic?.slug as keyof typeof topicIcons] || BookOpen
+                  return (
+                    <Link
+                      key={post.id}
+                      href={`/posts/${post.slug}`}
+                      className="group min-w-0 bg-[#faf9f5]"
+                    >
+                      <div className="relative aspect-[1.35] overflow-hidden bg-[#e1e6d7]">
+                        {image ? (
+                          <Media
+                            fill
+                            priority={index === 0}
+                            resource={image}
+                            imgClassName="object-cover transition-transform duration-500 group-hover:scale-105"
+                            size="(max-width: 640px) 45vw, (max-width: 1024px) 40vw, 25vw"
+                          />
+                        ) : (
+                          <div className="flex h-full items-center justify-center">
+                            <Icon className="size-14 text-[#7a866a]" strokeWidth={1} />
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3 sm:p-4">
+                        <p className="eyebrow flex items-center justify-between gap-2">
+                          {topic?.title || 'From the journal'}{' '}
+                          <ArrowUpRight className="size-3 shrink-0" />
+                        </p>
+                        <p className="font-editorial mt-2 line-clamp-2 text-lg leading-snug tracking-tight sm:text-xl">
+                          {post.title}
+                        </p>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+              <p className="mt-3 text-right text-[10px] leading-5 text-[#626b60]">
+                {heroStories.every((post) =>
+                  [
+                    '4-foot-farm-blueprint-guide',
+                    'pianoforall-adult-beginners-guide',
+                    'small-woodworking-shop-setup',
+                    'brain-training-for-dogs-review',
+                  ].includes(post.slug),
+                )
+                  ? 'AI-generated editorial illustrations'
+                  : 'Story artwork from the journal'}
+              </p>
+            </div>
+          ) : (
+            <div className="flex aspect-[1.18] flex-col justify-center bg-[#eeefe5] p-10">
+              <BookOpen className="mb-6 size-12 text-[#7a866a]" strokeWidth={1} />
+              <p className="font-editorial text-4xl">Your next useful read starts here.</p>
+              <p className="mt-4 text-sm leading-7 text-[#626b60]">
+                Practical ideas and a little research for everyday decisions.
+              </p>
+            </div>
+          )}
         </section>
         <div className="grid gap-5 border-y border-[#deded3] py-6 sm:grid-cols-3">
           {[
             {
-              icon: Search,
-              title: 'Look beyond the headline',
-              text: 'Features, trade-offs, and questions to ask.',
+              icon: BookOpen,
+              title: 'Put curiosity into practice',
+              text: 'Planning guides, comparisons, and useful next steps.',
             },
             {
-              icon: BookOpen,
-              title: 'Find your next useful read',
-              text: 'Practical advice before you buy.',
+              icon: Search,
+              title: 'Look beyond the headline',
+              text: 'Features, trade-offs, and claims worth checking.',
             },
             {
               icon: ShieldCheck,
@@ -117,6 +230,49 @@ export async function AffiliateHomeBlock(props: Props) {
             </div>
           ))}
         </div>
+        {journal.topics.length > 0 && (
+          <section id="topics" className="scroll-mt-24 border-b border-[#deded3] py-12 sm:py-14">
+            <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="eyebrow">Follow what interests you</p>
+                <h2 className="font-editorial mt-2 text-4xl tracking-tight">
+                  A journal with room to explore.
+                </h2>
+              </div>
+              <p className="max-w-sm text-sm leading-7 text-[#626b60]">
+                From a new skill to your next project, find a useful place to begin.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {journal.topics.map((topic) => {
+                const Icon = topicIcons[topic.slug as keyof typeof topicIcons] || BookOpen
+                return (
+                  <Link
+                    key={topic.slug}
+                    href={`/posts?topic=${topic.slug}`}
+                    className="group flex flex-col border border-[#deded3] p-6 transition hover:bg-[#eeefe5]"
+                  >
+                    <div className="mb-5 flex items-center justify-between">
+                      <Icon className="size-7 text-[#7a866a]" strokeWidth={1.3} />
+                      <span className="text-[10px] uppercase tracking-wider text-[#626b60]">
+                        {topic.count} {topic.count === 1 ? 'article' : 'articles'}
+                      </span>
+                    </div>
+                    <h3 className="font-editorial text-2xl leading-tight tracking-tight">
+                      {topic.title}
+                    </h3>
+                    <p className="mb-5 mt-3 text-xs leading-6 text-[#626b60]">
+                      {topic.description}
+                    </p>
+                    <span className="mt-auto inline-flex items-center justify-between text-xs font-medium">
+                      Explore this topic <ArrowUpRight className="size-4" />
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          </section>
+        )}
         <section className="py-14">
           <div className="mb-7 flex items-end justify-between gap-4">
             <div>
@@ -135,13 +291,14 @@ export async function AffiliateHomeBlock(props: Props) {
                   <p className="eyebrow">The ShoppeCove way</p>
                   <Leaf className="my-7 size-9 text-[#7a866a]" strokeWidth={1} />
                   <h3 className="font-editorial text-4xl leading-[1.15] tracking-tight">
-                    Less impulse.
+                    Good questions.
                     <br />
-                    More intention.
+                    More informed choices.
                   </h3>
                   <p className="mt-5 text-sm leading-7 text-[#626b60]">
-                    The right purchase starts with the right questions. Our guides help you think
-                    through what matters, what to compare, and what to check with the seller.
+                    Whether you’re planning a project, exploring a course, or comparing a product, a
+                    little research goes a long way. We look at what’s offered, what’s uncertain,
+                    and what to check before you commit.
                   </p>
                 </div>
                 <Link
@@ -154,65 +311,19 @@ export async function AffiliateHomeBlock(props: Props) {
             </div>
           ) : (
             <p className="py-10 text-[#626b60]">
-              Our first buying guides are on their way. Explore our approach to thoughtful shopping
-              below.
+              Our first stories are on their way. Explore our approach to researched reviews and
+              practical guides.
             </p>
           )}
         </section>
-        <section className="border-y border-[#deded3] py-10">
-          <div className="grid gap-6 lg:grid-cols-[1fr_3fr]">
-            <div>
-              <p className="eyebrow">Follow your curiosity</p>
-              <h2 className="font-editorial mt-2 text-3xl">A good place to start.</h2>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                {
-                  title: 'Kitchen & home',
-                  text: 'For the spaces you use every day.',
-                  href: '/posts?category=kitchen',
-                  icon: CookingPot,
-                },
-                {
-                  title: 'Sleep & comfort',
-                  text: 'Find your own kind of comfortable.',
-                  href: '/posts?category=sleep-comfort',
-                  icon: BedDouble,
-                },
-                {
-                  title: 'Buying guides',
-                  text: 'A little homework before checkout.',
-                  href: '/posts?category=buying-guides',
-                  icon: BookOpen,
-                },
-              ].map(({ title, text, href, icon: Icon }) => (
-                <Link
-                  key={title}
-                  href={href}
-                  className="group flex items-center gap-4 border border-[#deded3] p-5 transition hover:bg-[#eeefe5]"
-                >
-                  <Icon className="size-7 shrink-0 text-[#7a866a]" strokeWidth={1.3} />
-                  <div>
-                    <h3 className="font-editorial text-xl">{title}</h3>
-                    <p className="mt-1 text-xs text-[#626b60]">{text}</p>
-                  </div>
-                  <ArrowUpRight className="ml-auto size-4 shrink-0" />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-        {posts.length > 1 && (
-          <section className="py-14">
-            <p className="eyebrow">Something worth knowing</p>
-            <h2 className="font-editorial mb-7 mt-2 text-4xl tracking-tight">More useful reads</h2>
+        {morePosts.length > 0 && (
+          <section className="border-t border-[#deded3] py-14">
+            <p className="eyebrow">A different direction for every interest</p>
+            <h2 className="font-editorial mb-7 mt-2 text-4xl tracking-tight">More to discover</h2>
             <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-              {posts
-                .filter((p) => p.id !== featured?.id)
-                .slice(0, 3)
-                .map((post) => (
-                  <PostCard post={post} key={post.id} />
-                ))}
+              {morePosts.map((post) => (
+                <PostCard post={post} key={post.id} />
+              ))}
             </div>
           </section>
         )}

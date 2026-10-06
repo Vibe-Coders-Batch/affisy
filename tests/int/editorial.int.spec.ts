@@ -3,6 +3,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { articleDetails, jsonLD } from '@/utilities/article'
 import { shoppecoveGuides } from '@/content/shoppecove-guides'
 import type { Media, Post } from '@/payload-types'
+import { isStarterHomeImage } from '@/content/journal-home'
 
 const guide = shoppecoveGuides[0]
 describe('ShoppeCove editorial SEO', () => {
@@ -30,6 +31,35 @@ describe('ShoppeCove editorial SEO', () => {
       (await generateMeta({ doc: { slug: 'home', title: 'Home' } })).alternates?.canonical,
     ).toBe('https://blogs.shoppercove.com/')
     expect((await generateMeta({ doc: null })).robots).toEqual({ index: false, follow: false })
+  })
+  it('broadens the starter homepage metadata and uses a journal-wide social image', async () => {
+    const meta = await generateMeta({
+      doc: {
+        slug: 'home',
+        title: 'Home',
+        meta: {
+          title: 'Buying guides for a more thoughtful everyday | ShoppeCove',
+          description:
+            'Explore practical product research and buying guides for your kitchen, home, and everyday comfort.',
+        },
+      },
+    })
+    expect(meta.title).toBe('Practical guides, reviews & everyday ideas | ShoppeCove')
+    expect(meta.description).toContain('digital tools, wellness, and personal growth')
+    expect(meta.openGraph?.images).toEqual([
+      { url: 'https://blogs.shoppercove.com/images/journal-social.png' },
+    ])
+    const custom = await generateMeta({
+      doc: {
+        slug: 'home',
+        meta: { title: 'A custom journal', description: 'A custom description' },
+      },
+    })
+    expect(custom.title).toBe('A custom journal | ShoppeCove')
+    expect(custom.description).toBe('A custom description')
+    expect(isStarterHomeImage('matsato-osuren-kitchen.webp')).toBe(true)
+    expect(isStarterHomeImage('kitchen-editorial.webp')).toBe(true)
+    expect(isStarterHomeImage('custom-homepage.webp')).toBe(false)
   })
   it('gives repeated headings stable, distinct anchors and estimates reading time', () => {
     const heading = guide.content.root.children[0]

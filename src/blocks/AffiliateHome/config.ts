@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { journalHome } from '@/content/journal-home'
 
 export const AffiliateHome: Block = {
   slug: 'affiliateHome',
@@ -13,19 +14,28 @@ export const AffiliateHome: Block = {
       label: 'Hero',
       admin: { initCollapsed: false },
       fields: [
-        { name: 'heroTitle', type: 'text', required: true },
-        { name: 'heroDescription', type: 'textarea', required: true },
+        { name: 'heroTitle', type: 'text', required: true, defaultValue: journalHome.heroTitle },
+        {
+          name: 'heroDescription',
+          type: 'textarea',
+          required: true,
+          defaultValue: journalHome.heroDescription,
+        },
         {
           name: 'heroImage',
           type: 'upload',
           relationTo: 'media',
+          admin: {
+            description:
+              'Leave empty to show a selection of published stories across journal topics.',
+          },
         },
         {
           name: 'heroCTA',
           type: 'group',
           fields: [
-            { name: 'label', type: 'text', required: true },
-            { name: 'url', type: 'text', required: true },
+            { name: 'label', type: 'text', required: true, defaultValue: 'Explore the journal' },
+            { name: 'url', type: 'text', required: true, defaultValue: '/posts' },
           ],
         },
         {

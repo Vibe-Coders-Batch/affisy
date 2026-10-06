@@ -2,21 +2,17 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { getPublicJournal } from '@/utilities/getPublicJournal'
 import { getPublicPosts } from '@/utilities/getPublicPosts'
+import { journalTopics } from '@/utilities/journalTopics'
 import { PostGridSkeleton } from '@/components/Editorial/Loading'
 import { PostCard } from '@/components/Editorial/PostCard'
-import { siteURL } from '@/utilities/site'
+import { site, siteURL } from '@/utilities/site'
 
-type Args = { searchParams: Promise<{ category?: string; page?: string }> }
-const topics = [
-  { slug: '', title: 'All stories' },
-  { slug: 'kitchen', title: 'Kitchen & home' },
-  { slug: 'sleep-comfort', title: 'Sleep & comfort' },
-  { slug: 'buying-guides', title: 'Buying guides' },
-]
+type Args = { searchParams: Promise<{ category?: string; topic?: string; page?: string }> }
 
 export default async function Page({ searchParams }: Args) {
-  const { category = '', page = '1' } = await searchParams
+  const { category = '', topic = '', page = '1' } = await searchParams
   if (!/^\d+$/.test(page) || !Number.isSafeInteger(Number(page)) || Number(page) < 1) notFound()
   const currentPage = Number(page)
   return (
@@ -27,36 +23,75 @@ export default async function Page({ searchParams }: Args) {
         <br />A better choice.
       </h1>
       <p className="mt-5 max-w-xl text-base leading-8 text-[#626b60]">
-        Buying guides, product research, and useful things to know before you bring something new
-        home.
+        Practical guides and product research for your home, hobbies, pets, wellbeing, and digital
+        life. Follow a topic that interests you and find a useful place to start.
       </p>
-      <nav
-        aria-label="Article categories"
-        className="my-10 flex flex-wrap gap-3 border-y border-[#deded3] py-5"
-      >
-        {topics.map((topic) => (
-          <Link
-            key={topic.slug}
-            href={topic.slug ? `/posts?category=${topic.slug}` : '/posts'}
-            aria-current={category === topic.slug ? 'page' : undefined}
-            className={`rounded-full px-5 py-2 text-sm ${category === topic.slug ? 'bg-[#233d32] text-[#faf9f5]' : 'border border-[#deded3] hover:bg-[#eeefe5]'}`}
+      <Suspense
+        key={`topics:${category}:${topic}`}
+        fallback={
+          <div
+            aria-hidden="true"
+            className="my-10 flex flex-wrap gap-3 border-y border-[#deded3] py-5"
           >
-            {topic.title}
-          </Link>
-        ))}
-      </nav>
-      <Suspense key={`${category}:${currentPage}`} fallback={<PostGridSkeleton />}>
-        <PostResults category={category} currentPage={currentPage} />
+            {[0, 1, 2, 3].map((item) => (
+              <span key={item} className="h-9 w-32 animate-pulse rounded-full bg-[#eeefe5]" />
+            ))}
+          </div>
+        }
+      >
+        <TopicNavigation category={category} topic={topic} />
+      </Suspense>
+      <Suspense key={`${category}:${topic}:${currentPage}`} fallback={<PostGridSkeleton />}>
+        <PostResults category={category} topic={topic} currentPage={currentPage} />
       </Suspense>
     </div>
   )
 }
 
-async function PostResults({ category, currentPage }: { category: string; currentPage: number }) {
-  const posts = await getPublicPosts(category, currentPage)
+async function TopicNavigation({ category, topic }: { category: string; topic: string }) {
+  const journal = await getPublicJournal()
+  const topics = [
+    { slug: '', title: 'All stories', count: journal.posts.length },
+    ...journal.topics.filter(({ count }) => count > 0),
+  ]
+  return (
+    <nav
+      aria-label="Article topics"
+      className="my-10 flex flex-wrap gap-3 border-y border-[#deded3] py-5"
+    >
+      {topics.map((item) => {
+        const active = item.slug ? topic === item.slug : !topic && !category
+        return (
+          <Link
+            key={item.slug}
+            href={item.slug ? `/posts?topic=${item.slug}` : '/posts'}
+            aria-current={active ? 'page' : undefined}
+            className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm ${active ? 'bg-[#233d32] text-[#faf9f5]' : 'border border-[#deded3] hover:bg-[#eeefe5]'}`}
+          >
+            {item.title}
+            <span aria-hidden="true" className="text-xs opacity-70">
+              {item.count}
+            </span>
+          </Link>
+        )
+      })}
+    </nav>
+  )
+}
+
+async function PostResults({
+  category,
+  topic,
+  currentPage,
+}: {
+  category: string
+  topic: string
+  currentPage: number
+}) {
+  const posts = await getPublicPosts(category, currentPage, 12, '', '', topic)
   if (currentPage > Math.max(1, posts.totalPages)) notFound()
   const pageHref = (n: number) =>
-    `/posts?${new URLSearchParams({ ...(category ? { category } : {}), ...(n > 1 ? { page: String(n) } : {}) })}`.replace(
+    `/posts?${new URLSearchParams({ ...(category ? { category } : {}), ...(topic ? { topic } : {}), ...(n > 1 ? { page: String(n) } : {}) })}`.replace(
       /\?$/,
       '',
     )
@@ -94,17 +129,23 @@ async function PostResults({ category, currentPage }: { category: string; curren
 }
 
 export async function generateMetadata({ searchParams }: Args): Promise<Metadata> {
-  const { category = '', page = '1' } = await searchParams
-  const topic = topics.find((t) => t.slug === category)?.title || 'The journal'
+  const { category = '', topic = '', page = '1' } = await searchParams
+  const selectedTopic = journalTopics.find((item) => item.slug === topic)
+  const legacyCategoryTitles: Record<string, string> = {
+    kitchen: 'Kitchen & home',
+    'sleep-comfort': 'Sleep & comfort',
+    'buying-guides': 'Buying guides',
+  }
+  const title = selectedTopic?.title || legacyCategoryTitles[category] || 'The journal'
   const query = new URLSearchParams({
     ...(category ? { category } : {}),
+    ...(topic ? { topic } : {}),
     ...(Number(page) > 1 ? { page: String(Number(page)) } : {}),
   }).toString()
   return {
-    title: `${category ? topic : 'Buying guides & product research'}${Number(page) > 1 ? ` — Page ${Number(page)}` : ''} | ShoppeCove`,
-    description:
-      'Explore practical buying guides for kitchen tools, home essentials, and everyday comfort.',
+    title: `${title}${Number(page) > 1 ? ` — Page ${Number(page)}` : ''} | ShoppeCove`,
+    description: selectedTopic?.description || site.description,
     alternates: { canonical: siteURL(`/posts${query ? `?${query}` : ''}`) },
-    ...(category ? { robots: { index: false, follow: true } } : {}),
+    ...(category || topic ? { robots: { index: false, follow: true } } : {}),
   }
 }

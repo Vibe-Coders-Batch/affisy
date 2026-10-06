@@ -15,7 +15,7 @@ export async function Footer() {
           <p className="mt-4 max-w-sm text-sm leading-7 text-[#626b60]">
             A little research. A better choice.
             <br />
-            Useful reading for your home and everyday life.
+            Useful reading for your home, hobbies, pets, wellbeing, and digital life.
           </p>
         </div>
         <div className="md:justify-self-end">

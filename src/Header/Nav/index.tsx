@@ -8,8 +8,7 @@ import { CMSLink } from '@/components/Link'
 
 const links = [
   { href: '/posts', label: 'The journal' },
-  { href: '/posts?category=kitchen', label: 'Kitchen & home' },
-  { href: '/posts?category=sleep-comfort', label: 'Sleep & comfort' },
+  { href: '/#topics', label: 'Explore topics' },
   { href: '/editorial-policy', label: 'Our approach' },
 ]
 

@@ -6,6 +6,6 @@ export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'
   description: site.description,
   siteName: site.name,
   title: site.name,
-  images: [{ url: siteURL('/images/kitchen-editorial.webp') }],
+  images: [{ url: siteURL('/images/journal-social.png') }],
   ...og,
 })

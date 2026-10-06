@@ -496,6 +496,9 @@ export interface User {
 export interface AffiliateHomeBlock {
   heroTitle: string;
   heroDescription: string;
+  /**
+   * Leave empty to show a selection of published stories across journal topics.
+   */
   heroImage?: (string | null) | Media;
   heroCTA: {
     label: string;

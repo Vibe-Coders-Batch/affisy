@@ -1,12 +1,13 @@
 import type { Where } from 'payload'
 import { unstable_cache } from 'next/cache'
+import { journalTopics } from './journalTopics'
 
 export const publicPostsTag = 'public-post-cards'
 
 // Only public card data enters this shared cache. Draft previews use their own queries.
 // Keep the existing non-Cache-Components setup used by this Payload application.
 export const getPublicPosts = unstable_cache(
-  async (category = '', page = 1, limit = 12, query = '', id = '') => {
+  async (category = '', page = 1, limit = 12, query = '', id = '', topic = '') => {
     // Load the CMS only on a cache miss, after the results boundary can stream.
     const [{ default: config }, { getPayload }] = await Promise.all([
       import('@payload-config'),
@@ -29,6 +30,34 @@ export const getPublicPosts = unstable_cache(
       where.or = ['title', 'meta.description', 'meta.title', 'slug'].map((field) => ({
         [field]: { like: query },
       }))
+    }
+    if (topic) {
+      const definition = journalTopics.find(({ slug }) => slug === topic)
+      if (definition) {
+        const categories = await payload.find({
+          collection: 'categories',
+          where: { slug: { in: definition.categorySlugs } },
+          depth: 0,
+          overrideAccess: false,
+          pagination: false,
+          limit: 0,
+        })
+        where.and = [
+          {
+            or: [
+              { slug: { in: definition.postSlugs } },
+              {
+                and: [
+                  { slug: { not_in: journalTopics.flatMap(({ postSlugs }) => postSlugs) } },
+                  { categories: { in: categories.docs.map(({ id }) => id) } },
+                ],
+              },
+            ],
+          },
+        ]
+      } else {
+        where.slug = { in: [] }
+      }
     }
     return payload.find({
       collection: 'posts',

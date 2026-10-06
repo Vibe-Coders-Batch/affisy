@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowUpRight, BookOpen } from 'lucide-react'
 import { Media } from '@/components/Media'
 import type { Post } from '@/payload-types'
+import { getPostTopics } from '@/utilities/journalTopics'
 
 export type EditorialPost = Pick<Post, 'title' | 'slug' | 'meta' | 'categories'> &
   Partial<Pick<Post, 'heroImage' | 'publishedAt'>>
@@ -9,6 +10,7 @@ export type EditorialPost = Pick<Post, 'title' | 'slug' | 'meta' | 'categories'>
 export function PostCard({ post, featured = false }: { post: EditorialPost; featured?: boolean }) {
   const image = post.heroImage || post.meta?.image
   const category = post.categories?.find((c) => typeof c === 'object')
+  const topic = getPostTopics(post)[0]
   return (
     <article className={`editorial-card ${featured ? 'editorial-card-featured' : ''}`}>
       <Link
@@ -32,7 +34,8 @@ export function PostCard({ post, featured = false }: { post: EditorialPost; feat
       </Link>
       <div className="editorial-card-copy">
         <p className="eyebrow">
-          {category && typeof category === 'object' ? category.title : 'From the journal'}
+          {topic?.title ||
+            (category && typeof category === 'object' ? category.title : 'From the journal')}
         </p>
         <h3 className="font-editorial mt-3 text-2xl leading-tight tracking-tight">
           <Link href={`/posts/${post.slug}`}>{post.title}</Link>
