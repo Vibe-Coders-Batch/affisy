@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Clock3 } from 'lucide-react'
 import type { Post } from '@/payload-types'
-import { Media } from '@/components/Media'
+import { ArticleImage } from '@/components/Editorial/ArticleImage'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { articleDetails } from '@/utilities/article'
 import { hasAffiliateLink } from '@/components/Editorial/OfferCTA'
@@ -11,15 +11,7 @@ export const PostHero = ({ post }: { post: Post }) => {
   const date = post.publishedAt
   const affiliateURL = hasAffiliateLink(post.review) ? post.review?.affiliateURL : undefined
   const hero = post.heroImage && typeof post.heroImage === 'object' && (
-    <div className="relative aspect-[16/7] overflow-hidden bg-[#e9eadd]">
-      <Media
-        fill
-        priority
-        imgClassName="object-cover"
-        resource={post.heroImage}
-        size="(max-width: 1024px) 100vw, 1024px"
-      />
-    </div>
+    <ArticleImage image={post.heroImage} placement="hero" />
   )
   return (
     <header className="container">
@@ -83,7 +75,7 @@ export const PostHero = ({ post }: { post: Post }) => {
             hero
           )}
           {(post.imageCaption || affiliateURL) && (
-            <figcaption className="mt-2 space-y-1 text-xs leading-5 text-[#626b60]">
+            <figcaption className="mt-2 space-y-1 whitespace-pre-line break-words text-xs leading-5 text-[#626b60]">
               {post.imageCaption && <p>{post.imageCaption}</p>}
               {affiliateURL && (
                 <p>

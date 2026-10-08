@@ -12,6 +12,7 @@ module.exports = {
     '/admin/*',
     '/api/*',
     '/search',
+    '/terms',
     '/next/*',
     '/posts/page/*',
     '/posts-sitemap.xml',

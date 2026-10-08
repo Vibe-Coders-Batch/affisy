@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
 import { site } from '@/utilities/site'
+import { publication } from '@/utilities/publication'
 
 const getPagesSitemap = unstable_cache(
   async () => {
@@ -31,6 +32,9 @@ const getPagesSitemap = unstable_cache(
 
     const defaultSitemap = [
       { loc: `${SITE_URL}/affiliate-disclosure` },
+      { loc: `${SITE_URL}/privacy-policy`, lastmod: publication.policyUpdatedAt },
+      { loc: `${SITE_URL}/terms-and-conditions`, lastmod: publication.policyUpdatedAt },
+      { loc: `${SITE_URL}/earnings-disclaimer`, lastmod: publication.policyUpdatedAt },
       {
         loc: `${SITE_URL}/editorial-policy`,
         lastmod: dateFallback,
@@ -40,21 +44,23 @@ const getPagesSitemap = unstable_cache(
         lastmod: dateFallback,
       },
     ]
+    const staticLocations = new Set(defaultSitemap.map(({ loc }) => loc))
 
     const sitemap = results.docs
       ? results.docs
-          .filter((page) => Boolean(page?.slug))
+          .filter((page) => Boolean(page?.slug) && page.slug !== 'terms')
           .map((page) => {
             return {
               loc: page?.slug === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${page?.slug}`,
               lastmod: page.updatedAt || dateFallback,
             }
           })
+          .filter(({ loc }) => !staticLocations.has(loc))
       : []
 
     return [...defaultSitemap, ...sitemap]
   },
-  ['pages-sitemap', site.url],
+  ['pages-sitemap', site.url, 'policies-2026-10-08'],
   {
     tags: ['pages-sitemap'],
   },

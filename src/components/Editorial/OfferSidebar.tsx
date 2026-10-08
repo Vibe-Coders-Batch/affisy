@@ -1,5 +1,5 @@
 import type { Post } from '@/payload-types'
-import { Media } from '@/components/Media'
+import { ArticleImage } from './ArticleImage'
 import { hasAffiliateLink, OfferCTA } from './OfferCTA'
 
 export function OfferSidebar({
@@ -19,12 +19,10 @@ export function OfferSidebar({
       <p className="eyebrow mb-4">Explore the product</p>
       {image && typeof image === 'object' && (
         <figure className="mb-5">
-          <div className="relative aspect-video overflow-hidden bg-[#e9eadd]">
-            <Media fill resource={image} imgClassName="object-cover" size="280px" />
-          </div>
-          {post.imageCaption?.startsWith('AI-generated') && (
-            <figcaption className="mt-2 text-[11px] leading-4 text-[#626b60]">
-              AI-generated editorial illustration
+          <ArticleImage image={image} placement="sidebar" />
+          {post.imageCaption && (
+            <figcaption className="mt-2 whitespace-pre-line break-words text-xs leading-5 text-[#626b60]">
+              {post.imageCaption}
             </figcaption>
           )}
         </figure>

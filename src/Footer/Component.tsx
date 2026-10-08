@@ -23,6 +23,9 @@ export async function Footer() {
             <Link href="/posts">The journal</Link>
             <Link href="/editorial-policy">Our approach</Link>
             <Link href="/affiliate-disclosure">Affiliate disclosure</Link>
+            <Link href="/privacy-policy">Privacy policy</Link>
+            <Link href="/terms-and-conditions">Terms and conditions</Link>
+            <Link href="/earnings-disclaimer">Earnings disclaimer</Link>
             {footerData.navItems?.map(({ link }, i) => (
               <CMSLink key={i} {...link} />
             ))}

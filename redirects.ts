@@ -16,6 +16,11 @@ export const redirects: NextConfig['redirects'] = async () => {
 
   return [
     {
+      source: '/terms',
+      destination: '/terms-and-conditions',
+      permanent: true,
+    },
+    {
       source: '/posts/matsato-osuren-review',
       destination: '/posts/matsato-osuren-knife-review',
       permanent: true,
