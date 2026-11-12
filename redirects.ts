@@ -16,6 +16,11 @@ export const redirects: NextConfig['redirects'] = async () => {
 
   return [
     {
+      source: '/sitemap-0.xml',
+      destination: '/sitemap.xml',
+      permanent: true,
+    },
+    {
       source: '/terms',
       destination: '/terms-and-conditions',
       permanent: true,

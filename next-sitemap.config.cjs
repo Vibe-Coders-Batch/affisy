@@ -7,17 +7,8 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://blogs.shoppercove
 module.exports = {
   siteUrl: SITE_URL,
   generateRobotsTxt: true,
-  exclude: [
-    '/admin',
-    '/admin/*',
-    '/api/*',
-    '/search',
-    '/terms',
-    '/next/*',
-    '/posts/page/*',
-    '/posts-sitemap.xml',
-    '/pages-sitemap.xml',
-  ],
+  // The live sitemaps own all URL entries and their modification dates.
+  exclude: ['*'],
   robotsTxtOptions: {
     policies: [{ userAgent: '*', allow: '/', disallow: ['/admin', '/api/', '/next/'] }],
     additionalSitemaps: [`${SITE_URL}/pages-sitemap.xml`, `${SITE_URL}/posts-sitemap.xml`],

@@ -28,21 +28,13 @@ const getPagesSitemap = unstable_cache(
       },
     })
 
-    const dateFallback = new Date().toISOString()
-
     const defaultSitemap = [
       { loc: `${SITE_URL}/affiliate-disclosure` },
       { loc: `${SITE_URL}/privacy-policy`, lastmod: publication.policyUpdatedAt },
       { loc: `${SITE_URL}/terms-and-conditions`, lastmod: publication.policyUpdatedAt },
       { loc: `${SITE_URL}/earnings-disclaimer`, lastmod: publication.policyUpdatedAt },
-      {
-        loc: `${SITE_URL}/editorial-policy`,
-        lastmod: dateFallback,
-      },
-      {
-        loc: `${SITE_URL}/posts`,
-        lastmod: dateFallback,
-      },
+      { loc: `${SITE_URL}/editorial-policy` },
+      { loc: `${SITE_URL}/posts` },
     ]
     const staticLocations = new Set(defaultSitemap.map(({ loc }) => loc))
 
@@ -52,7 +44,7 @@ const getPagesSitemap = unstable_cache(
           .map((page) => {
             return {
               loc: page?.slug === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${page?.slug}`,
-              lastmod: page.updatedAt || dateFallback,
+              lastmod: page.updatedAt,
             }
           })
           .filter(({ loc }) => !staticLocations.has(loc))
@@ -63,6 +55,7 @@ const getPagesSitemap = unstable_cache(
   ['pages-sitemap', site.url, 'policies-2026-10-08'],
   {
     tags: ['pages-sitemap'],
+    revalidate: 300,
   },
 )
 
