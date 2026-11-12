@@ -27,14 +27,12 @@ const getPostsSitemap = unstable_cache(
       },
     })
 
-    const dateFallback = new Date().toISOString()
-
     const sitemap = results.docs
       ? results.docs
           .filter((post) => Boolean(post?.slug))
           .map((post) => ({
             loc: `${SITE_URL}/posts/${post?.slug}`,
-            lastmod: post.updatedAt || dateFallback,
+            lastmod: post.updatedAt,
           }))
       : []
 
@@ -43,6 +41,8 @@ const getPostsSitemap = unstable_cache(
   ['posts-sitemap-v2', site.url],
   {
     tags: ['posts-sitemap'],
+    // Standalone CMS scripts skip Next.js cache invalidation.
+    revalidate: 300,
   },
 )
 
