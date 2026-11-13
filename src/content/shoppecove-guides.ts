@@ -122,7 +122,7 @@ export const shoppecoveGuides: Guide[] = [
     },
     review: {
       basis:
-        'This preliminary guide uses supplier materials provided to ShoppeCove. We have not slept on this pillow, independently verified its specifications, or evaluated medical claims.',
+        'This preliminary guide uses supplier materials provided to ShopperCove. We have not slept on this pillow, independently verified its specifications, or evaluated medical claims.',
       summary:
         'Treat the butterfly contour as a fit preference to evaluate. Confirm the pillow’s height, dimensions, care requirements, and return eligibility before ordering.',
       advantages: [

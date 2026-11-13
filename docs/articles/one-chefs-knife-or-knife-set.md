@@ -2,7 +2,7 @@
 
 Status: published September 23, 2026.
 
-An original ShoppeCove planning guide. Examples illustrate buying and meal-planning decisions; they are not hands-on product tests.
+An original ShopperCove planning guide. Examples illustrate buying and meal-planning decisions; they are not hands-on product tests.
 
 ## Quick verdict
 

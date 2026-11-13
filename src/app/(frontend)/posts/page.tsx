@@ -17,7 +17,7 @@ export default async function Page({ searchParams }: Args) {
   const currentPage = Number(page)
   return (
     <div className="container py-12 sm:py-16">
-      <p className="eyebrow">The ShoppeCove journal</p>
+      <p className="eyebrow">The ShopperCove journal</p>
       <h1 className="font-editorial mt-4 text-5xl tracking-tight sm:text-6xl">
         A little research.
         <br />A better choice.
@@ -143,7 +143,7 @@ export async function generateMetadata({ searchParams }: Args): Promise<Metadata
     ...(Number(page) > 1 ? { page: String(Number(page)) } : {}),
   }).toString()
   return {
-    title: `${title}${Number(page) > 1 ? ` — Page ${Number(page)}` : ''} | ShoppeCove`,
+    title: `${title}${Number(page) > 1 ? ` — Page ${Number(page)}` : ''} | ShopperCove`,
     description: selectedTopic?.description || site.description,
     alternates: { canonical: siteURL(`/posts${query ? `?${query}` : ''}`) },
     ...(category || topic ? { robots: { index: false, follow: true } } : {}),

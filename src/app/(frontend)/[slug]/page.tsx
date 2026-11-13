@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 
-import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { PayloadRedirects, redirectToStoredTarget } from '@/components/PayloadRedirects'
+import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/JsonLd'
+import { homeStructuredData } from '@/utilities/structuredData'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
@@ -61,7 +64,8 @@ export default async function Page({ params: paramsPromise }: Args) {
   }
 
   if (!page) {
-    return <PayloadRedirects url={url} />
+    await redirectToStoredTarget(url)
+    notFound()
   }
 
   const { hero, layout } = page
@@ -73,6 +77,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
+      {decodedSlug === 'home' && !draft && <JsonLd data={homeStructuredData()} />}
 
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
@@ -88,7 +93,9 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     slug: decodedSlug,
   })
 
-  return generateMeta({ doc: page })
+  return generateMeta({
+    doc: page || (decodedSlug === 'home' ? homeStatic : null),
+  })
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {

@@ -29,6 +29,7 @@ const getPagesSitemap = unstable_cache(
     })
 
     const defaultSitemap = [
+      { loc: `${SITE_URL}/about` },
       { loc: `${SITE_URL}/affiliate-disclosure` },
       { loc: `${SITE_URL}/privacy-policy`, lastmod: publication.policyUpdatedAt },
       { loc: `${SITE_URL}/terms-and-conditions`, lastmod: publication.policyUpdatedAt },
@@ -52,7 +53,7 @@ const getPagesSitemap = unstable_cache(
 
     return [...defaultSitemap, ...sitemap]
   },
-  ['pages-sitemap', site.url, 'policies-2026-10-08'],
+  ['pages-sitemap', site.url, 'policies-2026-10-08', 'about'],
   {
     tags: ['pages-sitemap'],
     revalidate: 300,

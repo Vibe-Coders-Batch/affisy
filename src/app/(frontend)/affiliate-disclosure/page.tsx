@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { siteURL } from '@/utilities/site'
 export const metadata: Metadata = {
-  title: 'Affiliate disclosure | ShoppeCove',
-  description: 'How affiliate links support ShoppeCove and what that means when you shop.',
+  title: 'Affiliate disclosure | ShopperCove',
+  description: 'How affiliate links support ShopperCove and what that means when you shop.',
   alternates: { canonical: siteURL('/affiliate-disclosure') },
 }
 export default function Page() {
@@ -13,7 +13,7 @@ export default function Page() {
         <h1 className="font-editorial mt-4 text-5xl tracking-tight">How affiliate links work.</h1>
         <div className="article-body prose mt-10 max-w-none">
           <p>
-            ShoppeCove may earn a commission when you follow an affiliate link and make a purchase.
+            ShopperCove may earn a commission when you follow an affiliate link and make a purchase.
             This does not add an extra charge to your purchase.
           </p>
           <h2>Where you will see them</h2>
@@ -24,7 +24,7 @@ export default function Page() {
           </p>
           <h2>Your purchase is with the seller</h2>
           <p>
-            ShoppeCove is a separate publication, not the manufacturer or official store for
+            ShopperCove is a separate publication, not the manufacturer or official store for
             products discussed here. The seller handles orders, payment, delivery, warranties, and
             returns. Check the full order total and current terms before purchasing.
           </p>

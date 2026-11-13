@@ -15,7 +15,7 @@ const assets = [
     filename: 'matsato-osuren-kitchen.webp',
     alt: 'Matsato Osuren knife slicing a block of cheese on a wooden cutting board',
     caption:
-      'Matsato Osuren in use in a supplier-provided photograph. This is not a ShoppeCove hands-on test.',
+      'Matsato Osuren in use in a supplier-provided photograph. This is not a ShopperCove hands-on test.',
   },
   {
     filename: 'matsato-osuren-product.webp',

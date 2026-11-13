@@ -1,6 +1,6 @@
 # Matsato supplier assets
 
-Selected from the public [asset folder supplied by the site owner](https://drive.google.com/drive/folders/1P5lnDRsD9zKaMyXMv3xgbnpj5y3WsUaC) on September 19, 2026. These are supplier photographs/product imagery, not ShoppeCove testing evidence.
+Selected from the public [asset folder supplied by the site owner](https://drive.google.com/drive/folders/1P5lnDRsD9zKaMyXMv3xgbnpj5y3WsUaC) on September 19, 2026. These are supplier photographs/product imagery, not ShopperCove testing evidence.
 
 | Local web asset | Original supplier file | Placement |
 | --- | --- | --- |

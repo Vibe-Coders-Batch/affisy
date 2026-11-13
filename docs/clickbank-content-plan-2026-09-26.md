@@ -1,6 +1,6 @@
 # New ClickBank offers and published articles
 
-Checked September 26, 2026 for ShoppeCove, targeting US readers through organic Google search. This is an internal editorial plan, not a consumer article. The recommendations are an assessment of fit and observed marketplace signals, not a revenue guarantee or an exhaustive ranking of ClickBank.
+Checked September 26, 2026 for ShopperCove, targeting US readers through organic Google search. This is an internal editorial plan, not a consumer article. The recommendations are an assessment of fit and observed marketplace signals, not a revenue guarantee or an exhaustive ranking of ClickBank.
 
 ## Publication status
 
@@ -47,7 +47,7 @@ The tracked links are saved in `src/content/researched-posts.ts` and each articl
 | Offer | EPC | Avg. commission | CVR | Gravity | Decision |
 | --- | --- | --- | --- | --- | --- |
 | TedsWoodworking | $0.15 | $59.23 | 0.26% | 86.2 | Stronger marketplace activity than some candidates, but a large plan-library review needs a sample/content-quality inspection; defer rather than endorse quantity claims |
-| My Shed Plans | $0.04 | $32.83 | 0.11% | 21.5 | Low observed EPC and project-specific suitability questions; not an initial ShoppeCove priority |
+| My Shed Plans | $0.04 | $32.83 | 0.11% | 21.5 | Low observed EPC and project-specific suitability questions; not an initial ShopperCove priority |
 | Declutter Fast | $0.00 | $10.88 | 0.00% | 0.1 | Existing draft preserved; current displayed activity does not justify prioritizing monetization over established kitchen topics |
 
 Screening is not a full product audit. These three were not selected for new promotional articles, and their full affiliate terms were not re-reviewed in this pass. Health supplements, lottery and manifestation offers were outside the site's editorial focus even when commissions were higher.

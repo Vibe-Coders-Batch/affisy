@@ -1,8 +1,8 @@
 # Small woodworking shop setup: plan your space before buying tools
 
-An original ShoppeCove buying and planning guide. Product information checked September 26, 2026. We reviewed public product information; we have not bought or tested the paid guide discussed below.
+An original ShopperCove buying and planning guide. Product information checked September 26, 2026. We reviewed public product information; we have not bought or tested the paid guide discussed below.
 
-ShoppeCove may earn a commission if you buy through an affiliate link.
+ShopperCove may earn a commission if you buy through an affiliate link.
 
 A useful small woodworking shop setup starts with the projects you want to finish and the space you can actually use. A garage full of equipment is not the goal. A place where you can work, put things away, and begin again next weekend is a better starting point.
 

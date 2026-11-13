@@ -141,12 +141,9 @@ describe('Article images and credits', () => {
     const sidebarLink = root.querySelector('a[data-affiliate-placement="sidebar"]')
     for (const link of [heroLink, sidebarLink]) {
       expect(link?.getAttribute('href')).toBe(trackedURL)
-      expect(link?.getAttribute('rel')).toContain('sponsored')
-      expect(link?.getAttribute('rel')).toContain('nofollow')
+      expect(link?.getAttribute('rel')).toBe('sponsored nofollow noopener')
+      expect(link?.getAttribute('target')).toBe('_blank')
     }
-    expect(heroLink?.getAttribute('target')).toBeNull()
-    expect(sidebarLink?.getAttribute('target')).toBe('_blank')
-    expect(sidebarLink?.getAttribute('rel')).toContain('noopener')
     expect(root.querySelector('header figcaption')?.textContent).toContain('Affiliate link:')
     expect(root.querySelector('aside')?.textContent).toContain('Affiliate link:')
     expect(root.querySelector('aside')?.getAttribute('tabindex')).toBe('0')

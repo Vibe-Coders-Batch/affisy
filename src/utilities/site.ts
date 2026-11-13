@@ -1,5 +1,5 @@
 export const site = {
-  name: 'ShoppeCove',
+  name: 'ShopperCove',
   description:
     'Practical guides, thoughtful product research, and useful ideas for your home, hobbies, pets, wellbeing, and digital life.',
   url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://blogs.shoppercove.com').replace(/\/$/, ''),

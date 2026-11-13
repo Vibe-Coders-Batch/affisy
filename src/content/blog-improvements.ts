@@ -255,7 +255,7 @@ export function supportingPost(guide: DraftGuide): RequiredDataFromCollectionSlu
     review: {
       summary: guide.summary,
       basis:
-        'An original ShoppeCove planning guide. Examples illustrate buying and meal-planning decisions; they are not hands-on product tests.',
+        'An original ShopperCove planning guide. Examples illustrate buying and meal-planning decisions; they are not hands-on product tests.',
     },
     content: editorState([
       element('paragraph', guide.intro),

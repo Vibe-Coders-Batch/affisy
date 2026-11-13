@@ -4,7 +4,7 @@ Brain Training for Dogs is worth considering if you want a structured course for
 
 **How we researched this guide:** We reviewed the seller's public product and affiliate pages on September 26, 2026, alongside independent animal-welfare guidance. We have not purchased the course, accessed its members' area or tested its exercises with a dog. This is a researched buying guide, not a hands-on review.
 
-**Affiliate disclosure:** ShoppeCove may earn a commission if you purchase through an affiliate link on our website.
+**Affiliate disclosure:** ShopperCove may earn a commission if you purchase through an affiliate link on our website.
 
 ## What is Brain Training for Dogs?
 

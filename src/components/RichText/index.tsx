@@ -7,7 +7,6 @@ import {
 } from '@payloadcms/richtext-lexical'
 import {
   JSXConvertersFunction,
-  LinkJSXConverter,
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 
@@ -21,8 +20,9 @@ import type {
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
-import { createElement } from 'react'
+import { createElement, type ReactNode } from 'react'
 import { headingID, nodeText } from '@/utilities/article'
+import { anchorAttributes } from '@/utilities/linkAttributes'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -37,9 +37,37 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+const renderLink = ({
+  node,
+  nodesToJSX,
+}: {
+  node: {
+    type: string
+    children: SerializedLinkNode['children']
+    fields: { linkType?: string | null; url?: string | null; newTab?: boolean | null }
+  }
+  nodesToJSX: (args: { nodes: SerializedLinkNode['children'] }) => ReactNode
+}) => {
+  const children = nodesToJSX({ nodes: node.children })
+  let href = node.fields.url || ''
+  if (node.fields.linkType === 'internal') {
+    try {
+      href = internalDocToHref({ linkNode: node as SerializedLinkNode })
+    } catch {
+      return children
+    }
+  }
+  const attributes = anchorAttributes(href, Boolean(node.fields.newTab))
+  if (!attributes) return children
+  return createElement('a', attributes, children)
+}
+
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
-  ...LinkJSXConverter({ internalDocToHref }),
+  // Override the default link converters. Node views must not replace these:
+  // affiliate hops were reaching the page as plain text when the anchor was dropped.
+  link: renderLink,
+  autolink: renderLink,
   blocks: {
     banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
     mediaBlock: ({ node }) => (

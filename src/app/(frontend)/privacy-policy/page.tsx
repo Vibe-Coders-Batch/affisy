@@ -4,8 +4,8 @@ import { publication } from '@/utilities/publication'
 import { siteURL } from '@/utilities/site'
 
 export const metadata: Metadata = {
-  title: 'Privacy policy | ShoppeCove',
-  description: 'How ShoppeCove handles contact messages, website requests, and affiliate links.',
+  title: 'Privacy policy | ShopperCove',
+  description: 'How ShopperCove handles contact messages, website requests, and affiliate links.',
   alternates: { canonical: siteURL('/privacy-policy') },
 }
 
@@ -21,7 +21,7 @@ export default function Page() {
         </p>
         <div className="article-body prose mt-10 max-w-none">
           <p>
-            ShoppeCove is a blog and product-research publication operated by {publication.operator}
+            ShopperCove is a blog and product-research publication operated by {publication.operator}
             . This policy covers information handled through this website. For privacy questions,
             contact{' '}
             <a className="break-words" href={`mailto:${publication.contactEmail}`}>
@@ -74,7 +74,7 @@ export default function Page() {
           </p>
           <p>
             Purchases and payment details are handled on the seller’s checkout, rather than on
-            ShoppeCove. Check the seller’s privacy, payment, and refund terms before ordering.
+            ShopperCove. Check the seller’s privacy, payment, and refund terms before ordering.
           </p>
           <h2>Storage and retention</h2>
           <p>

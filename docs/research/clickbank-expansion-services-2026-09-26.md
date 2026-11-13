@@ -51,7 +51,7 @@ Live searches used: `VINCheckup review`, `VINCheckup official affiliates pricing
 
 My assessment: branded intent is contested and trust-sensitive. Another seller-summary review is unlikely to offer a strong editorial distinction. Search volume, keyword difficulty, rank positions and expected traffic were not measured.
 
-Potential original articles, only if ShoppeCove intentionally adds an automotive category:
+Potential original articles, only if ShopperCove intentionally adds an automotive category:
 
 - “VIN decoder vs vehicle history report: what are you paying for?” Include a field-by-field evidence checklist and free official alternatives after verifying them.
 - “One car or a shortlist: choosing a vehicle-report package.” Compare total spend and expiration, without claiming one data provider is most accurate.
@@ -68,7 +68,7 @@ Reconsider promotion after confirming the account's commission, upstream NMVTIS 
 - [Public application form](https://www.rocketlanguages.com/partner-program/register) accepts ClickBank or Commission Junction identifiers and describes review/approval. These route differences are unresolved; an accessible form does not establish eligibility or approval.
 - [Full partner terms](https://www.rocketlanguages.com/partner-program/terms) require compliance with ClickBank's contract, prohibit trademark PPC bidding (including competitor terms), trademarked domains, impersonation and verbatim copying. Promotional comparisons must be truthful; derogatory promotional wording and defamatory competitor claims are prohibited. Organic review content still needs to follow those conditions.
 
-Use only the commission and permissions granted to the user's approved account. Do not present the maximum tier as the normal rate or claim ShoppeCove is accepted. No application was submitted.
+Use only the commission and permissions granted to the user's approved account. Do not present the maximum tier as the normal rate or claim ShopperCove is accepted. No application was submitted.
 
 ### Course offering, prices and access
 
@@ -115,7 +115,7 @@ Live ClickBank snapshots supplied by root, September 26, 2026; not independently
 | VINCHECKUP | $11.02 | $0.61 | 5.44% | 12.3 | 108 | No approval badge observed |
 | ROCKETLANG | $105.17 total; $100.76 initial; $4.41 future | $4.37 | 4.27% | 9.1 | 76 | Approval required |
 
-Rocket's marketplace description reportedly mentions 20–70%, while the directly retrieved partner page uses the tiers above. VINCheckup's marketplace description reportedly says 75%, versus 65% in its browser-inspected affiliate terms. Treat both as rate-verification issues; only the account's approved contract decides the applicable rate. Marketplace averages describe other transactions and traffic; they do not predict ShoppeCove earnings, establish customer value or remove admission restrictions.
+Rocket's marketplace description reportedly mentions 20–70%, while the directly retrieved partner page uses the tiers above. VINCheckup's marketplace description reportedly says 75%, versus 65% in its browser-inspected affiliate terms. Treat both as rate-verification issues; only the account's approved contract decides the applicable rate. Marketplace averages describe other transactions and traffic; they do not predict ShopperCove earnings, establish customer value or remove admission restrictions.
 
 ## Outstanding work before promotion
 

@@ -1,6 +1,6 @@
 # 4 Foot Farm Blueprint: expansion research
 
-Checked September 26, 2026 for ShoppeCove’s US organic Google-search strategy. Research only: no article, purchase, signup, seller message, account change or CMS write.
+Checked September 26, 2026 for ShopperCove’s US organic Google-search strategy. Research only: no article, purchase, signup, seller message, account change or CMS write.
 
 ## Decision
 
@@ -16,7 +16,7 @@ The parent agent supplied this live public, logged-out Marketplace observation d
 | --- | --- | --- | --- | --- | --- |
 | 4FTFARM | $5.22 | $0.09 | 2.43% | 7.2 | 468 |
 
-These are observed marketplace economics, not ShoppeCove forecasts. Conversion rate depends on the traffic mix and does not itself measure product quality. Low revenue per sale makes the effort needed for an original article and qualified traffic particularly relevant. Do not treat EPC as revenue per website visit or a safe advertising bid.
+These are observed marketplace economics, not ShopperCove forecasts. Conversion rate depends on the traffic mix and does not itself measure product quality. Low revenue per sale makes the effort needed for an original article and qualified traffic particularly relevant. Do not treat EPC as revenue per website visit or a safe advertising bid.
 
 ## What the seller currently advertises
 
@@ -57,7 +57,7 @@ This topic is relevant to US readers with patios, balconies and small yards, but
 - **Container garden guide or free Extension resources?** Evaluate how much direction a beginner needs and what information either option actually provides.
 - **Planning an edible patio around the foods you use.** Useful if supported by horticultural sources and actual space/light examples; avoid presenting invented growing experience.
 
-These are reader-intent ideas, not researched keyword-volume or difficulty claims. The fact that free authoritative resources exist means a generic summary would offer little reason to prefer ShoppeCove. A measured setup comparison, original photographs or a carefully documented plan would make the content more useful.
+These are reader-intent ideas, not researched keyword-volume or difficulty claims. The fact that free authoritative resources exist means a generic summary would offer little reason to prefer ShopperCove. A measured setup comparison, original photographs or a carefully documented plan would make the content more useful.
 
 ## Before selecting it
 

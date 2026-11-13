@@ -52,7 +52,7 @@ export const cookbookSections: Section[] = [
     paragraphs: [
       'Start with three meals, rather than trying to overhaul every breakfast, lunch and dinner at once. Choose one familiar dish, one meal that uses ingredients you already have, and one new idea you are excited to try. Keep your usual backup dinner available while you learn the recipes.',
       'Read each recipe through before shopping. Write one combined ingredient list, subtract what is already in your pantry, and note any equipment or advance preparation. This is more useful than buying ingredients for a long list of dishes you may never cook.',
-      'After cooking, make a short note: actual time, portions, what you changed and whether you would make it again. Your own notes turn a recipe collection into a smaller set of dependable meals. These are ShoppeCove planning suggestions, not results from testing this cookbook.',
+      'After cooking, make a short note: actual time, portions, what you changed and whether you would make it again. Your own notes turn a recipe collection into a smaller set of dependable meals. These are ShopperCove planning suggestions, not results from testing this cookbook.',
     ],
   },
   {
