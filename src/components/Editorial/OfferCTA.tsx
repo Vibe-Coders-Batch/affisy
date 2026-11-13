@@ -39,11 +39,17 @@ export function OfferCTA({
             {review?.ctaDescription ||
               'See the current options, check the full cost, and read the seller’s return terms.'}
           </p>
+          {review?.bestFor && (
+            <p className={`mt-3 text-sm leading-7 ${dark ? 'text-[#d9dfd1]' : 'text-[#52604e]'}`}>
+              <span className="font-semibold">Best for: </span>
+              {review.bestFor}
+            </p>
+          )}
         </>
       )}
       <a
         href={review!.affiliateURL!}
-        rel="sponsored nofollow noopener noreferrer"
+        rel="sponsored nofollow noopener"
         target="_blank"
         data-affiliate-placement={placement}
         className={`inline-flex min-h-12 w-full items-center justify-center gap-3 px-5 py-3 text-center text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-4 ${sidebar ? '' : 'sm:w-auto'} ${compact ? '' : 'mt-5'} ${dark ? 'bg-[#faf9f5] text-[#233d32] hover:bg-[#e5eadb] focus-visible:outline-[#faf9f5]' : 'bg-[#233d32] text-[#faf9f5] hover:bg-[#3c5744] focus-visible:outline-[#233d32]'}`}
@@ -65,6 +71,12 @@ export function ReviewSummary({ review }: { review: Post['review'] }) {
     <section aria-label="Quick verdict" className="mb-10 bg-[#ecefe3] p-6 sm:p-8">
       <h2 className="eyebrow">The quick verdict</h2>
       <p className="font-editorial mt-3 text-2xl leading-snug">{review.summary}</p>
+      {typeof review.rating === 'number' && (
+        <p className="mt-3 text-sm text-[#52604e]">Rating: {review.rating} out of 5</p>
+      )}
+      {review.ctaTitle && (
+        <h3 className="font-editorial mt-5 text-2xl leading-snug">{review.ctaTitle}</h3>
+      )}
       {(review.bestFor || review.considerAlternative) && (
         <dl className="mt-6 grid gap-5 border-t border-[#cdd3bf] pt-5 sm:grid-cols-2">
           {[

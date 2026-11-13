@@ -88,7 +88,7 @@ export async function AffiliateHomeBlock(props: Props) {
     <div className="shoppecove-home">
       <div className="container">
         <div className="flex flex-wrap justify-between gap-2 border-b border-[#deded3] py-4 text-[10px] uppercase tracking-[0.16em] text-[#626b60]">
-          <span>The ShoppeCove journal</span>
+          <span>The ShopperCove journal</span>
           <span>Many interests. Considered choices.</span>
         </div>
         <section className="grid items-center gap-10 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 lg:py-16">
@@ -288,7 +288,7 @@ export async function AffiliateHomeBlock(props: Props) {
               <PostCard featured post={featured} />
               <aside className="flex flex-col justify-between bg-[#e9eddf] p-7 sm:p-9">
                 <div>
-                  <p className="eyebrow">The ShoppeCove way</p>
+                  <p className="eyebrow">The ShopperCove way</p>
                   <Leaf className="my-7 size-9 text-[#7a866a]" strokeWidth={1} />
                   <h3 className="font-editorial text-4xl leading-[1.15] tracking-tight">
                     Good questions.

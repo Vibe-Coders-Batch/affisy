@@ -58,7 +58,7 @@ async function SearchResults({ query }: { query: string }) {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Search the journal | ShoppeCove`,
+    title: `Search the journal | ShopperCove`,
     robots: { index: false, follow: true },
   }
 }

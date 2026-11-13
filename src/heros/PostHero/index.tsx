@@ -5,11 +5,14 @@ import { ArticleImage } from '@/components/Editorial/ArticleImage'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { articleDetails } from '@/utilities/article'
 import { hasAffiliateLink } from '@/components/Editorial/OfferCTA'
+import { anchorAttributes } from '@/utilities/linkAttributes'
+import { affiliateDisclosure } from '@/utilities/affiliateDisclosure'
 
 export const PostHero = ({ post }: { post: Post }) => {
-  const author = formatAuthors(post.populatedAuthors || []) || 'ShoppeCove editorial'
+  const author = formatAuthors(post.populatedAuthors || []) || 'ShopperCove editorial'
   const date = post.publishedAt
   const affiliateURL = hasAffiliateLink(post.review) ? post.review?.affiliateURL : undefined
+  const heroLink = affiliateURL ? anchorAttributes(affiliateURL, true) : null
   const hero = post.heroImage && typeof post.heroImage === 'object' && (
     <ArticleImage image={post.heroImage} placement="hero" />
   )
@@ -58,13 +61,21 @@ export const PostHero = ({ post }: { post: Post }) => {
             {articleDetails(post.content).readingMinutes} min read
           </span>
         </div>
+        <p
+          data-affiliate-disclosure
+          className="mx-auto mt-6 max-w-2xl text-sm leading-6 text-[#626b60]"
+        >
+          {affiliateDisclosure}{' '}
+          <Link href="/affiliate-disclosure" className="underline underline-offset-4">
+            Affiliate disclosure
+          </Link>
+        </p>
       </div>
       {hero && (
         <figure className="mx-auto mt-10 max-w-5xl">
-          {affiliateURL ? (
+          {heroLink ? (
             <a
-              href={affiliateURL}
-              rel="sponsored nofollow noreferrer"
+              {...heroLink}
               data-affiliate-placement="hero"
               aria-label={`${post.review?.linkLabel || 'View product details'} (seller website)`}
               className="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#233d32]"

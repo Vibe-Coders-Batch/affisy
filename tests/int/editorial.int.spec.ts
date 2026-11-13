@@ -6,19 +6,29 @@ import type { Media, Post } from '@/payload-types'
 import { isStarterHomeImage } from '@/content/journal-home'
 
 const guide = shoppecoveGuides[0]
-describe('ShoppeCove editorial SEO', () => {
+describe('ShopperCove editorial SEO', () => {
   it('uses the public article URL and preserves absolute CDN image URLs', async () => {
     const meta = await generateMeta({
       collection: 'posts',
       doc: {
         ...guide,
         meta: {
-          title: 'Knife guide | ShoppeCove',
+          title: 'Knife guide | ShopperCove',
           image: { url: 'https://cdn.example.com/knife.webp' } as Media,
         },
       },
     })
-    expect(meta.title).toBe('Knife guide | ShoppeCove')
+    expect(meta.title).toBe('Knife guide | ShopperCove')
+    const legacy = await generateMeta({
+      collection: 'posts',
+      doc: {
+        ...guide,
+        _status: 'published',
+        meta: { title: 'Knife guide | ShoppeCove', noindex: true },
+      },
+    })
+    expect(legacy.title).toBe('Knife guide | ShopperCove')
+    expect(legacy.robots).toEqual({ index: false, follow: true })
     expect(meta.alternates?.canonical).toBe(
       'https://blogs.shoppercove.com/posts/matsato-osuren-review',
     )
@@ -38,13 +48,13 @@ describe('ShoppeCove editorial SEO', () => {
         slug: 'home',
         title: 'Home',
         meta: {
-          title: 'Buying guides for a more thoughtful everyday | ShoppeCove',
+          title: 'Buying guides for a more thoughtful everyday | ShopperCove',
           description:
             'Explore practical product research and buying guides for your kitchen, home, and everyday comfort.',
         },
       },
     })
-    expect(meta.title).toBe('Practical guides, reviews & everyday ideas | ShoppeCove')
+    expect(meta.title).toBe('Practical guides, reviews & everyday ideas | ShopperCove')
     expect(meta.description).toContain('digital tools, wellness, and personal growth')
     expect(meta.openGraph?.images).toEqual([
       { url: 'https://blogs.shoppercove.com/images/journal-social.png' },
@@ -55,7 +65,7 @@ describe('ShoppeCove editorial SEO', () => {
         meta: { title: 'A custom journal', description: 'A custom description' },
       },
     })
-    expect(custom.title).toBe('A custom journal | ShoppeCove')
+    expect(custom.title).toBe('A custom journal | ShopperCove')
     expect(custom.description).toBe('A custom description')
     expect(isStarterHomeImage('matsato-osuren-kitchen.webp')).toBe(true)
     expect(isStarterHomeImage('kitchen-editorial.webp')).toBe(true)

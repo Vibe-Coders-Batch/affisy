@@ -1,8 +1,8 @@
-# ShoppeCove launch notes
+# ShopperCove launch notes
 
 ## Positioning
 
-ShoppeCove is a US-focused shopping journal for home, kitchen, and everyday comfort. The homepage leads readers into useful articles; seller links belong inside relevant articles with a visible disclosure. Start with Matsato Osuren and Derila Ergo. The EPC Workshop URL is a catalog, so select a specific product and evaluate its evidence before adding it.
+ShopperCove is a US-focused shopping journal for home, kitchen, and everyday comfort. The homepage leads readers into useful articles; seller links belong inside relevant articles with a visible disclosure. Start with Matsato Osuren and Derila Ergo. The EPC Workshop URL is a catalog, so select a specific product and evaluate its evidence before adding it.
 
 ## What is ready
 
@@ -49,6 +49,6 @@ Google recommends original, useful review content with evidence and meaningful c
 
 ## Offer restrictions to retain
 
-The [Matsato affiliate page](https://matsato-osuren.com/matsato-osuren/affiliates) and supplied Derila materials prohibit brand bidding and official-brand impersonation, including brand use in site-level headers/footers. Keep ShoppeCove's own branding. Product coverage inside clearly labeled articles is separate from the site's identity. Read all applicable program terms before running ads.
+The [Matsato affiliate page](https://matsato-osuren.com/matsato-osuren/affiliates) and supplied Derila materials prohibit brand bidding and official-brand impersonation, including brand use in site-level headers/footers. Keep ShopperCove's own branding. Product coverage inside clearly labeled articles is separate from the site's identity. Read all applicable program terms before running ads.
 
 [EPC Workshop's catalog and affiliate terms](https://epcworkshop.com/cb/new/home.html) cover several unrelated products and include specific review-labeling and creative-use requirements. No EPC offer has been selected or promoted in this implementation.

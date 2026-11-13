@@ -31,7 +31,7 @@ export const researchedArticles: ResearchedArticle[] = [
       considerAlternative:
         'You need hands-on instruction, site-specific electrical work or professional safety advice.',
       basis:
-        'An original ShoppeCove workshop-planning article based on public sales and affiliate pages checked September 26, 2026. We have not purchased or tested Ultimate Small Shop.',
+        'An original ShopperCove workshop-planning article based on public sales and affiliate pages checked September 26, 2026. We have not purchased or tested Ultimate Small Shop.',
       advantages: [
         { text: 'The seller describes several workshop-planning topics in one digital guide.' },
         {

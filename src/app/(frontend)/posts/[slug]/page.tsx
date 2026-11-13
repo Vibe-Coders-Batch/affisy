@@ -1,19 +1,23 @@
 import type { Metadata } from 'next'
 
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
-import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { PayloadRedirects, redirectToStoredTarget } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
+import { notFound } from 'next/navigation'
 import React, { cache } from 'react'
 import { ArticleBody } from '@/components/Editorial/ArticleBody'
 import { hasAffiliateLink, OfferCTA, ReviewSummary } from '@/components/Editorial/OfferCTA'
 import { OfferSidebar } from '@/components/Editorial/OfferSidebar'
+import { JsonLd } from '@/components/JsonLd'
+import { PostCard } from '@/components/Editorial/PostCard'
 
 import type { Post } from '@/payload-types'
 import Link from 'next/link'
-import { articleDetails, jsonLD } from '@/utilities/article'
-import { site, siteURL, mediaURL } from '@/utilities/site'
+import { articleDetails } from '@/utilities/article'
+import { postStructuredData } from '@/utilities/structuredData'
+import { relatedCategoryIDs } from '@/utilities/relatedReviews'
+import { siteURL } from '@/utilities/site'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -54,55 +58,22 @@ export default async function Post({ params: paramsPromise }: Args) {
   const url = '/posts/' + decodedSlug
   const post = await queryPostBySlug({ slug: decodedSlug })
 
-  if (!post) return <PayloadRedirects url={url} />
+  if (!post) {
+    await redirectToStoredTarget(url)
+    notFound()
+  }
 
   const { headings } = articleDetails(post.content)
-  const image = post.meta?.image || post.heroImage
-  const imageURL = image && typeof image === 'object' ? mediaURL(image.url) : undefined
   const canonical = siteURL(url)
   const review = post.review
   const showOfferSidebar = hasAffiliateLink(review)
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'BlogPosting',
-        '@id': `${canonical}#article`,
-        headline: post.title,
-        description: post.meta?.description,
-        mainEntityOfPage: canonical,
-        url: canonical,
-        datePublished: post.publishedAt || undefined,
-        dateModified: post.updatedAt,
-        ...(imageURL ? { image: [imageURL] } : {}),
-        author: post.populatedAuthors?.some((a) => a.name)
-          ? post.populatedAuthors
-              .filter((a) => a.name)
-              .map((a) => ({ '@type': 'Person', name: a.name }))
-          : { '@type': 'Organization', name: site.name, url: site.url },
-        publisher: { '@type': 'Organization', name: site.name, url: site.url },
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: siteURL('/') },
-          { '@type': 'ListItem', position: 2, name: 'The journal', item: siteURL('/posts') },
-          { '@type': 'ListItem', position: 3, name: post.title, item: canonical },
-        ],
-      },
-    ],
-  }
+  const related = await queryRelatedReviews(post)
   return (
     <article className="py-10 sm:py-14">
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
-      {!draft && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: jsonLD(structuredData) }}
-        />
-      )}
+      {!draft && <JsonLd data={postStructuredData(post, canonical)} />}
       <PostHero post={post} />
       <div
         className={`container mt-12 grid items-start gap-10 lg:justify-center ${showOfferSidebar ? 'lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-8 xl:grid-cols-[180px_minmax(0,1fr)_280px]' : 'lg:grid-cols-[220px_minmax(0,740px)] lg:gap-14'}`}
@@ -209,11 +180,20 @@ export default async function Post({ params: paramsPromise }: Args) {
               </ul>
             </section>
           )}
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-14"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
+          {related.length > 0 && (
+            <section
+              className="mt-14 border-t border-[#deded3] pt-8"
+              aria-labelledby="related-reviews"
+            >
+              <h2 id="related-reviews" className="font-editorial text-3xl">
+                Related reviews
+              </h2>
+              <div className="mt-6 grid gap-8 md:grid-cols-2">
+                {related.map((item) => (
+                  <PostCard key={item.id} post={item} />
+                ))}
+              </div>
+            </section>
           )}
         </div>
         <OfferSidebar post={post} />
@@ -250,4 +230,38 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   })
 
   return result.docs?.[0] || null
+})
+
+const queryRelatedReviews = cache(async (post: Post) => {
+  const categoryIDs = relatedCategoryIDs(post.categories)
+  const manual = (post.relatedPosts || []).filter(
+    (item): item is Post => typeof item === 'object' && item._status !== 'draft',
+  )
+  if (!categoryIDs.length) return manual.slice(0, 3)
+  const payload = await getPayload({ config: configPromise })
+  const result = await payload.find({
+    collection: 'posts',
+    depth: 1,
+    draft: false,
+    limit: 6,
+    overrideAccess: false,
+    pagination: false,
+    sort: '-publishedAt',
+    where: {
+      and: [
+        { _status: { equals: 'published' } },
+        { id: { not_equals: post.id } },
+        { categories: { in: categoryIDs } },
+        { 'meta.noindex': { not_equals: true } },
+      ],
+    },
+  })
+  const seen = new Set<string>()
+  return [...manual, ...result.docs]
+    .filter((item) => {
+      if (!item.slug || item.id === post.id || seen.has(item.id)) return false
+      seen.add(item.id)
+      return true
+    })
+    .slice(0, 3)
 })

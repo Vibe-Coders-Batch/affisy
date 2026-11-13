@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { revalidatePostCards, revalidateDeletedPostCards } from '@/hooks/revalidatePostCards'
+import { publicMediaFileURL } from '@/utilities/publicMediaFile'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,6 +45,16 @@ export const Media: CollectionConfig = {
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     staticDir: path.resolve(dirname, '../../public/media'),
+    handlers: [
+      (_req, { params }) => {
+        // R2 files are public, but disablePayloadAccessControl skips the S3 reader.
+        // Admin thumbnails still request /api/media/file/*, which 500s when the object is not on disk.
+        if (params.clientUploadContext) return
+        const location = publicMediaFileURL(params.filename, params.prefix)
+        if (!location) return
+        return Response.redirect(location, 302)
+      },
+    ],
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

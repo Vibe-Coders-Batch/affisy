@@ -223,7 +223,7 @@ html[data-theme='light'] {
   opacity: initial;
 }
 
-/* ShoppeCove's editorial palette stays legible regardless of the admin theme. */
+/* ShopperCove's editorial palette stays legible regardless of the admin theme. */
 body {
   background: #faf9f5;
   color: #233d32;

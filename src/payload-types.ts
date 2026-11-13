@@ -253,6 +253,10 @@ export interface Post {
     image?: (string | null) | Media;
     description?: string | null;
     useExactTitle?: boolean | null;
+    /**
+     * Off by default. Turn on to add a noindex tag and leave the post out of the XML sitemap.
+     */
+    noindex?: boolean | null;
     focusKeyphrase?: string | null;
     secondaryKeywords?:
       | {
@@ -269,8 +273,20 @@ export interface Post {
   imageCaption?: string | null;
   review?: {
     summary?: string | null;
+    /**
+     * Optional score from 1 to 5. Leave blank unless you have a real rating. It is shown only when set.
+     */
+    rating?: number | null;
     bestFor?: string | null;
     considerAlternative?: string | null;
+    safetyNote?: string | null;
+    useRecoveredAffiliate?: boolean | null;
+    reviewedBy?: {
+      name?: string | null;
+      credentials?: string | null;
+      reviewedAt?: string | null;
+      profileURL?: string | null;
+    };
     /**
      * State whether you tested the product or used seller information. Do not imply hands-on testing without evidence.
      */
@@ -342,6 +358,7 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  prefix?: string | null;
   folder?: (string | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
@@ -1381,6 +1398,7 @@ export interface PostsSelect<T extends boolean = true> {
         image?: T;
         description?: T;
         useExactTitle?: T;
+        noindex?: T;
         focusKeyphrase?: T;
         secondaryKeywords?:
           | T
@@ -1396,8 +1414,19 @@ export interface PostsSelect<T extends boolean = true> {
     | T
     | {
         summary?: T;
+        rating?: T;
         bestFor?: T;
         considerAlternative?: T;
+        safetyNote?: T;
+        useRecoveredAffiliate?: T;
+        reviewedBy?:
+          | T
+          | {
+              name?: T;
+              credentials?: T;
+              reviewedAt?: T;
+              profileURL?: T;
+            };
         basis?: T;
         advantages?:
           | T
@@ -1445,6 +1474,7 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  prefix?: T;
   folder?: T;
   updatedAt?: T;
   createdAt?: T;

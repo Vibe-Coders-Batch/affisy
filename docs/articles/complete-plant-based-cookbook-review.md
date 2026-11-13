@@ -61,7 +61,7 @@ Start with three meals, rather than trying to overhaul every breakfast, lunch an
 
 Read each recipe through before shopping. Write one combined ingredient list, subtract what is already in your pantry, and note any equipment or advance preparation. This is more useful than buying ingredients for a long list of dishes you may never cook.
 
-After cooking, make a short note: actual time, portions, what you changed and whether you would make it again. Your own notes turn a recipe collection into a smaller set of dependable meals. These are ShoppeCove planning suggestions, not results from testing this cookbook.
+After cooking, make a short note: actual time, portions, what you changed and whether you would make it again. Your own notes turn a recipe collection into a smaller set of dependable meals. These are ShopperCove planning suggestions, not results from testing this cookbook.
 
 ## When free recipes or a library book may be enough
 
@@ -87,7 +87,7 @@ Our recommendation is to judge this offer by its usefulness in your kitchen. Che
 
 [Compare current cookbook packages](https://6a3d5ky7yrnkulfgtvwkm29las.hop.clickbank.net/?&traffic_source=blog)
 
-Affiliate link: ShoppeCove may earn a commission if you buy, at no extra cost to you.
+Affiliate link: ShopperCove may earn a commission if you buy, at no extra cost to you.
 
 ## Sources
 

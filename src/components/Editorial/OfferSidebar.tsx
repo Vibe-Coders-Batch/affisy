@@ -34,6 +34,12 @@ export function OfferSidebar({
         {post.review?.ctaDescription ||
           'See the current price, purchase options and return terms on the seller’s website.'}
       </p>
+      {post.review?.bestFor && (
+        <p className="mt-3 text-sm leading-6 text-[#52604e]">
+          <span className="font-semibold text-[#233d32]">Best for: </span>
+          {post.review.bestFor}
+        </p>
+      )}
       <OfferCTA review={post.review} placement="sidebar" />
     </aside>
   )

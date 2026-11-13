@@ -1,10 +1,10 @@
 # ClickBank expansion research: sewing and piano
 
-Checked September 26, 2026. Internal offer-selection research for ShoppeCove’s US organic Google-search strategy. No article draft, account change, signup, purchase, seller message or CMS write was performed for this research.
+Checked September 26, 2026. Internal offer-selection research for ShopperCove’s US organic Google-search strategy. No article draft, account change, signup, purchase, seller message or CMS write was performed for this research.
 
 ## Decision
 
-**Pianoforall: recommend for a small, evidence-led organic content test, subject to current Marketplace economics and review of a sample.** Its public lesson preview, concrete device information and straightforward advertised purchase make a useful buying-guide comparison possible. This is a recommendation to investigate and test, not a finding that the course produces musical results or will earn revenue for ShoppeCove.
+**Pianoforall: recommend for a small, evidence-led organic content test, subject to current Marketplace economics and review of a sample.** Its public lesson preview, concrete device information and straightforward advertised purchase make a useful buying-guide comparison possible. This is a recommendation to investigate and test, not a finding that the course produces musical results or will earn revenue for ShopperCove.
 
 **Sewing Pattern Secrets: conditional; hold promotion for now.** Sewing could fit a home-hobbies section, but the inconsistent refund descriptions and required affiliate onboarding create meaningful unresolved questions. A higher observed commission would not remove those problems. Reconsider after the seller clarifies the conditions and the owner obtains approval.
 

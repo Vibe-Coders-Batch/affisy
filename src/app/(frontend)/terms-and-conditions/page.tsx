@@ -4,8 +4,8 @@ import { publication } from '@/utilities/publication'
 import { siteURL } from '@/utilities/site'
 
 export const metadata: Metadata = {
-  title: 'Terms and conditions | ShoppeCove',
-  description: 'Terms for reading and using ShoppeCove’s articles, research, and affiliate links.',
+  title: 'Terms and conditions | ShopperCove',
+  description: 'Terms for reading and using ShopperCove’s articles, research, and affiliate links.',
   alternates: { canonical: siteURL('/terms-and-conditions') },
 }
 
@@ -21,7 +21,7 @@ export default function Page() {
         </p>
         <div className="article-body prose mt-10 max-w-none">
           <p>
-            ShoppeCove is a blog and product-research publication operated by {publication.operator}
+            ShopperCove is a blog and product-research publication operated by {publication.operator}
             . These terms cover use of this website and its content. Questions can be sent to{' '}
             <a className="break-words" href={`mailto:${publication.contactEmail}`}>
               {publication.contactEmail}
@@ -53,14 +53,14 @@ export default function Page() {
           </p>
           <h2>Purchases and external websites</h2>
           <p>
-            ShoppeCove does not sell the products described in its articles or process their orders.
+            ShopperCove does not sell the products described in its articles or process their orders.
             Your purchase agreement is with the seller or checkout provider. That provider handles
             payment, access or delivery, subscriptions, warranties, cancellations, and refunds under
             its own terms. Contact the seller or checkout support for order help.
           </p>
           <p>
             External websites have their own terms and privacy practices. A link does not guarantee
-            the content, service, or suitability of its destination, or make ShoppeCove the
+            the content, service, or suitability of its destination, or make ShopperCove the
             manufacturer, seller, or an official representative of that business.
           </p>
           <h2>Affiliate relationships</h2>

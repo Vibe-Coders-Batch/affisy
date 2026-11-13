@@ -186,7 +186,7 @@ try {
             `## ${s.title}\n\n${(s.paragraphs || []).join('\n\n')}${s.bullets?.length ? '\n\n' + s.bullets.map((b) => '- ' + b).join('\n') : ''}`,
         )
         .join('\n\n') +
-      `\n\n[See current cookbook options](${cookbookAffiliateURL})\n\nAffiliate link: ShoppeCove may earn a commission if you buy.\n`
+      `\n\n[See current cookbook options](${cookbookAffiliateURL})\n\nAffiliate link: ShopperCove may earn a commission if you buy.\n`
     await mkdir('docs/articles', { recursive: true })
     await writeFile('docs/articles/complete-plant-based-cookbook-review.md', draftText)
     console.log(

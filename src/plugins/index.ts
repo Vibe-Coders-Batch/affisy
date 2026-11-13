@@ -31,7 +31,7 @@ if (process.env.R2_BUCKET && !hasR2Configuration) {
 }
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | ShoppeCove` : 'ShoppeCove'
+  return doc?.title ? `${doc.title} | ShopperCove` : 'ShopperCove'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc, collectionSlug }) => {

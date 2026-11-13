@@ -10,15 +10,21 @@ export const generateMeta = async ({
   doc: Partial<Page> | Partial<Post> | null
   collection?: 'pages' | 'posts'
 }): Promise<Metadata> => {
-  if (!doc) return { title: 'Page not found | ShoppeCove', robots: { index: false, follow: false } }
+  if (!doc)
+    return { title: 'Page not found | ShopperCove', robots: { index: false, follow: false } }
   const path =
     doc.slug === 'home' ? '/' : `/${collection === 'posts' ? 'posts/' : ''}${doc.slug || ''}`
   const post = collection === 'posts' ? (doc as Partial<Post>) : undefined
   const starterHome =
     doc.slug === 'home' &&
-    doc.meta?.title === 'Buying guides for a more thoughtful everyday | ShoppeCove'
+    // Published pages may still store the previous spelling in the SEO title.
+    (doc.meta?.title === 'Buying guides for a more thoughtful everyday | ShopperCove' ||
+      doc.meta?.title === 'Buying guides for a more thoughtful everyday | ShoppeCove')
   const rawTitle = starterHome ? journalHome.metaTitle : doc.meta?.title || doc.title || site.name
-  const cleanTitle = rawTitle.replace(/\s*\|\s*(Payload Website Template|ShoppeCove)$/i, '')
+  const cleanTitle = rawTitle.replace(
+    /\s*\|\s*(Payload Website Template|ShopperCove|ShoppeCove)$/i,
+    '',
+  )
   const title = post?.meta?.useExactTitle ? cleanTitle : `${cleanTitle} | ${site.name}`
   const description = starterHome
     ? journalHome.metaDescription
@@ -64,6 +70,10 @@ export const generateMeta = async ({
       description,
       images: imageURL ? [imageURL] : [],
     },
-    ...(doc._status === 'draft' ? { robots: { index: false, follow: false } } : {}),
+    ...(doc._status === 'draft'
+      ? { robots: { index: false, follow: false } }
+      : post?.meta?.noindex
+        ? { robots: { index: false, follow: true } }
+        : {}),
   }
 }

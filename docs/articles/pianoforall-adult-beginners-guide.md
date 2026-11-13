@@ -4,7 +4,7 @@ Pianoforall is worth considering if you want an organized piano course you can f
 
 **How we researched this guide:** We checked public product information and the US ClickBank checkout on September 26, 2026. We have not purchased the course, evaluated its complete lessons or tested learning results. The sample checklist below is a way to assess the offer yourself, not a report of our experience using it.
 
-**Affiliate disclosure:** ShoppeCove may earn a commission if you buy through an affiliate link on our website.
+**Affiliate disclosure:** ShopperCove may earn a commission if you buy through an affiliate link on our website.
 
 ## What kind of course is Pianoforall?
 

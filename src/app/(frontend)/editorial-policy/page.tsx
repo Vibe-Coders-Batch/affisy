@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { siteURL } from '@/utilities/site'
 export const metadata: Metadata = {
-  title: 'Our editorial approach | ShoppeCove',
-  description: 'How ShoppeCove approaches product research, sources, and affiliate relationships.',
+  title: 'Our editorial approach | ShopperCove',
+  description: 'How ShopperCove approaches product research, sources, and affiliate relationships.',
   alternates: { canonical: siteURL('/editorial-policy') },
 }
 export default function Page() {
@@ -18,7 +18,7 @@ export default function Page() {
         </h1>
         <div className="article-body prose mt-10 max-w-none">
           <p>
-            ShoppeCove is a buying-guide publication for people researching products for their home
+            ShopperCove is a buying-guide publication for people researching products for their home
             and everyday life. We help readers identify useful questions, compare features, and
             understand purchase terms.
           </p>
@@ -41,7 +41,7 @@ export default function Page() {
             guides are not medical advice. Claims about treating a medical condition require
             appropriate evidence.
           </p>
-          <h2>How ShoppeCove earns</h2>
+          <h2>How ShopperCove earns</h2>
           <p>
             Some articles may contain affiliate links. A purchase through those links may earn us a
             commission. We identify those links and keep commercial relationships visible. Read our{' '}

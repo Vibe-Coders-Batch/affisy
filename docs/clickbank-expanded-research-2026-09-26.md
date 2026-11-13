@@ -1,4 +1,4 @@
-# New ClickBank offers for ShoppeCove
+# New ClickBank offers for ShopperCove
 
 Research date: September 26, 2026. Audience: US readers arriving through organic Google search. This is an offer-selection report, not a revenue forecast or a hands-on product review.
 

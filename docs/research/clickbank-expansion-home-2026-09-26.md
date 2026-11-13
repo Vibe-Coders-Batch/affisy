@@ -9,7 +9,7 @@ Research checked September 26, 2026. Internal product-selection research only. N
 | TedsWoodworking | **Reject for the present promotion shortlist** | A relevant niche and clear headline offer do not resolve substantial questions about the collection's provenance, organization, and advertised plan count. A named woodworking creator reports a critical firsthand inspection of an earlier package. We have not inspected the current product or resolved that conflict. |
 | The Self-Sufficient Backyard | **Hold: not ready for this site's SEO promotion** | Traceable authors and established retail distribution justify further evaluation, but the verified affiliate page broadly restricts Google while allowing affiliates' own websites. That ambiguity must be clarified in writing for Google organic traffic before this site's intended campaign proceeds. |
 
-Neither verdict predicts revenue. The first protects the site's editorial credibility; the second identifies a candidate worth examining, not a product already tested or endorsed by ShoppeCove.
+Neither verdict predicts revenue. The first protects the site's editorial credibility; the second identifies a candidate worth examining, not a product already tested or endorsed by ShopperCove.
 
 ## TedsWoodworking
 
@@ -53,7 +53,7 @@ Internal evidence URL: `https://6.sbackyard.pay.clickbank.net/?cbfid=45112&vtid=
 
 As a separate retail reference, [Mother Earth News Store](https://store.motherearthnews.com/products/the-self-sufficient-backyard) lists the 266-page paperback by Ron and Johanna Melchiore at **$37**, or **$34.99 for members**, and calls itself an approved distributor. It displays **4.71/5 from seven reviews**. The sample is small and retailer-hosted. One review says the book involves more construction than that reader wanted. This supports a real physical retail product and a possible buyer-fit limitation; it does not verify the ClickBank bundle, shipping total, fulfillment speed, or all technical advice.
 
-The [seller's sales page](https://www.selfsufficientbackyard.com/) describes garden, water, power, food-storage, and other projects, and states a **60-day money-back guarantee**. Claims about near-total independence, profit, broad climate suitability, and replacing reliance on pharmacies are not demonstrated by the public evidence reviewed. We should not use those claims as ShoppeCove promises. The checkout corroborated a 60-day return/replacement window, but the linked [refund policy](https://www.selfsufficientbackyard.com/refund-policy/) did not expose substantive text to this agent's research tool. Physical-return procedure, return-postage responsibility, and shipping-charge reimbursement remain unverified.
+The [seller's sales page](https://www.selfsufficientbackyard.com/) describes garden, water, power, food-storage, and other projects, and states a **60-day money-back guarantee**. Claims about near-total independence, profit, broad climate suitability, and replacing reliance on pharmacies are not demonstrated by the public evidence reviewed. We should not use those claims as ShopperCove promises. The checkout corroborated a 60-day return/replacement window, but the linked [refund policy](https://www.selfsufficientbackyard.com/refund-policy/) did not expose substantive text to this agent's research tool. Physical-return procedure, return-postage responsibility, and shipping-charge reimbursement remain unverified.
 
 ### Verified affiliate restrictions: hold for channel clarification
 
@@ -65,7 +65,7 @@ A separate [Independent Backyard affiliate center](https://independentbackyard.c
 
 ### Current marketplace snapshot
 
-Parent-agent browser observation, September 26, 2026: vendor **`SBACKYARD`**, average commission **$39.37**, conversion rate **0.36%**, EPC **$0.15**, gravity **14**, rank **185**. No approval badge was visible. That observation does not mean that every channel is approved. The current marketplace EPC differs substantially from the older affiliate-page claim and is still not a forecast for ShoppeCove's traffic.
+Parent-agent browser observation, September 26, 2026: vendor **`SBACKYARD`**, average commission **$39.37**, conversion rate **0.36%**, EPC **$0.15**, gravity **14**, rank **185**. No approval badge was visible. That observation does not mean that every channel is approved. The current marketplace EPC differs substantially from the older affiliate-page claim and is still not a forecast for ShopperCove's traffic.
 
 ### Author and book evidence beyond the sales funnel
 

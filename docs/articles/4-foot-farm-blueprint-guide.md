@@ -6,7 +6,7 @@ Our recommendation is to begin with a simple site checklist and free Extension g
 
 **How we researched this guide:** We reviewed public offer information, the US ClickBank checkout and Extension guidance on September 26, 2026. We have not purchased the paid plans or tested a garden using them.
 
-**Affiliate disclosure:** ShoppeCove may earn a commission if you buy through an affiliate link on our website.
+**Affiliate disclosure:** ShopperCove may earn a commission if you buy through an affiliate link on our website.
 
 ## What the $7 purchase includes
 

@@ -157,6 +157,16 @@ export const Posts: CollectionConfig<'posts'> = {
               label: 'Use SEO title exactly as entered',
             },
             {
+              name: 'noindex',
+              type: 'checkbox',
+              label: 'Hide this post from search engines',
+              defaultValue: false,
+              admin: {
+                description:
+                  'Off by default. Turn on to add a noindex tag and leave the post out of the XML sitemap.',
+              },
+            },
+            {
               name: 'focusKeyphrase',
               type: 'text',
               label: 'Primary focus keyphrase',
@@ -202,8 +212,38 @@ export const Posts: CollectionConfig<'posts'> = {
       label: 'Product guide & affiliate link',
       fields: [
         { name: 'summary', type: 'textarea', label: 'At a glance' },
+        {
+          name: 'rating',
+          type: 'number',
+          min: 1,
+          max: 5,
+          label: 'Rating',
+          admin: {
+            step: 0.1,
+            description:
+              'Optional score from 1 to 5. Leave blank unless you have a real rating. It is shown only when set.',
+          },
+        },
         { name: 'bestFor', type: 'textarea', label: 'Worth considering if' },
         { name: 'considerAlternative', type: 'textarea', label: 'Consider another option if' },
+        { name: 'safetyNote', type: 'textarea', label: 'Safety note' },
+        {
+          name: 'useRecoveredAffiliate',
+          type: 'checkbox',
+          label: 'Affiliate link was recovered from the article',
+          defaultValue: false,
+        },
+        {
+          name: 'reviewedBy',
+          type: 'group',
+          label: 'Reviewed by',
+          fields: [
+            { name: 'name', type: 'text' },
+            { name: 'credentials', type: 'text' },
+            { name: 'reviewedAt', type: 'date' },
+            { name: 'profileURL', type: 'text', label: 'Profile URL' },
+          ],
+        },
         {
           name: 'basis',
           type: 'textarea',

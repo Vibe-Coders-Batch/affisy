@@ -17,9 +17,7 @@ const getPostsSitemap = unstable_cache(
       limit: 1000,
       pagination: false,
       where: {
-        _status: {
-          equals: 'published',
-        },
+        and: [{ _status: { equals: 'published' } }, { 'meta.noindex': { not_equals: true } }],
       },
       select: {
         slug: true,

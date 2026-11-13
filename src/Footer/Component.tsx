@@ -9,7 +9,7 @@ export async function Footer() {
     <footer className="mt-auto border-t border-[#deded3] bg-[#f0f0e8] text-[#233d32]">
       <div className="container grid gap-10 py-12 md:grid-cols-[1fr_1fr]">
         <div>
-          <Link href="/" aria-label="ShoppeCove home">
+          <Link href="/" aria-label="ShopperCove home">
             <Logo />
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-7 text-[#626b60]">
@@ -21,23 +21,28 @@ export async function Footer() {
         <div className="md:justify-self-end">
           <nav aria-label="Footer navigation" className="flex flex-wrap gap-5 text-sm">
             <Link href="/posts">The journal</Link>
+            <Link href="/about">About</Link>
             <Link href="/editorial-policy">Our approach</Link>
             <Link href="/affiliate-disclosure">Affiliate disclosure</Link>
             <Link href="/privacy-policy">Privacy policy</Link>
             <Link href="/terms-and-conditions">Terms and conditions</Link>
             <Link href="/earnings-disclaimer">Earnings disclaimer</Link>
-            {footerData.navItems?.map(({ link }, i) => (
-              <CMSLink key={i} {...link} />
-            ))}
+            {footerData.navItems?.map(({ link }, i) => {
+              const href = 'url' in link && typeof link.url === 'string' ? link.url : ''
+              if (href === '/about' || href === '/affiliate-disclosure' || link.label === 'About') {
+                return null
+              }
+              return <CMSLink key={i} {...link} />
+            })}
           </nav>
           <p className="mt-6 max-w-lg text-xs leading-6 text-[#626b60]">
-            ShoppeCove may earn a commission when you buy through affiliate links. Product prices,
+            ShopperCove may earn a commission when you buy through affiliate links. Product prices,
             availability, shipping, and returns are determined by the seller.
           </p>
         </div>
       </div>
       <div className="container border-t border-[#d8dbd0] py-5 text-xs text-[#626b60]">
-        © {new Date().getFullYear()} ShoppeCove. All rights reserved.
+        © {new Date().getFullYear()} ShopperCove. All rights reserved.
       </div>
     </footer>
   )

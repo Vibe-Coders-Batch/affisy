@@ -81,7 +81,7 @@ try {
       context,
       data: {
         meta: {
-          title: 'Buying guides for a more thoughtful everyday | ShoppeCove',
+          title: 'Buying guides for a more thoughtful everyday | ShopperCove',
           description:
             'Explore practical product research and buying guides for your kitchen, home, and everyday comfort.',
           image: null,

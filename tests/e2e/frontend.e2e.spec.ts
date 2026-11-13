@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test'
 
-test('ShoppeCove homepage and journal navigation', async ({ page }) => {
+test('ShopperCove homepage and journal navigation', async ({ page }) => {
   await page.goto('http://localhost:3000')
-  await expect(page).toHaveTitle(/ShoppeCove/)
+  await expect(page).toHaveTitle(/ShopperCove/)
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Follow your curiosity.')
   await page.getByRole('link', { name: 'Explore the journal' }).click()
   const topics = page.getByRole('navigation', { name: 'Article topics' })

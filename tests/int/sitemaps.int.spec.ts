@@ -68,7 +68,9 @@ describe('Sitemaps', () => {
         collection: 'posts',
         draft: false,
         overrideAccess: false,
-        where: { _status: { equals: 'published' } },
+        where: {
+          and: [{ _status: { equals: 'published' } }, { 'meta.noindex': { not_equals: true } }],
+        },
       }),
     )
     expect(cache).toHaveBeenCalledWith(expect.any(Function), expect.any(Array), {
